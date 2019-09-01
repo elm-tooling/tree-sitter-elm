@@ -97,7 +97,6 @@ struct Scanner
 
     bool scan_comment(TSLexer *lexer)
     {
-        lexer->mark_end(lexer);
         if (lexer->lookahead != '{')
             return false;
 
@@ -139,7 +138,6 @@ struct Scanner
         if (lexer->lookahead == '"')
         {
             advance(lexer);
-            lexer->mark_end(lexer);
             if (lexer->lookahead == '"')
             {
                 advance(lexer);
@@ -191,6 +189,7 @@ struct Scanner
 
         // Check if we have newlines and how much indentation
         bool has_newline = false;
+        lexer->mark_end(lexer);
         while (true)
         {
             if (lexer->lookahead == '\n')
@@ -238,7 +237,6 @@ struct Scanner
             skip(lexer);
             if (lexer->lookahead == 'i')
             {
-                lexer->mark_end(lexer);
                 skip(lexer);
 
                 if (lexer->lookahead == 'n')
@@ -268,7 +266,6 @@ struct Scanner
                 if (lookahead >= 'a' && lookahead <= 'z' || lookahead == '(')
                 {
                     lexer->result_symbol = MINUS_WITHOUT_TRAILING_WHITESPACE;
-                    lexer->mark_end(lexer);
 
                     return true;
                 }
@@ -282,7 +279,6 @@ struct Scanner
                         advance(lexer);
                     }
                     runback.clear();
-                    lexer->mark_end(lexer);
                     return true;
                 }
             }
