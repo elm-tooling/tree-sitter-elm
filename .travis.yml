@@ -1,23 +1,28 @@
 language: node_js
 
-sudo: false
-
 node_js:
   - "10"
 
-os:
-  - linux
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
-branches:
-  only:
-    - /^v.*$/
+before_install:
+  - eval "${MATRIX_EVAL}"
 
 deploy:
   provider: script
   script: npm run prebuild && npm run prebuild:upload -u ${PREBUILD_UPLOAD}
-  skip_cleanup: true
+  cleanup: false
   on:
-    all_branches: true
     tags: true
 
 env:
