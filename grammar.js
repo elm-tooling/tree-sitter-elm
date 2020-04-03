@@ -336,7 +336,7 @@ module.exports = grammar({
       prec.left(
         seq(
           alias($._dot_without_leading_whitespace, $.dot),
-          $.lower_case_identifier
+          $._lower_case_identifier_without_leading_whitespace
         )
       ),
 
