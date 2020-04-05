@@ -1,0 +1,46 @@
+
+
+=====================================
+Incomplete field access
+=====================================
+
+type alias Model =
+    { data : Data
+    }
+
+
+test : Model -> String
+test model = model.data.
+
+
+type alias Model =
+    { data : Data
+    }
+
+---
+
+(file 
+
+(type_alias_declaration (type) (alias) (upper_case_identifier) (eq) 
+    (type_expression (record_type (left_brace) (field_type (lower_case_identifier) (colon) 
+    (type_expression (type_ref (upper_case_qid (upper_case_identifier))))
+    ) (right_brace))
+    )
+) 
+
+(type_annotation (lower_case_identifier) (colon) 
+    (type_expression 
+        (type_ref (upper_case_qid (upper_case_identifier))) (arrow) 
+        (type_ref (upper_case_qid (upper_case_identifier)))
+    )
+) 
+(value_declaration (function_declaration_left (lower_case_identifier) (lower_pattern (lower_case_identifier))) (eq) 
+    (field_access_expr (value_expr (value_qid (lower_case_identifier))) (field_access_segment (dot) (lower_case_identifier)) (field_access_segment (dot) (ERROR)))
+) 
+
+(type_alias_declaration (type) (alias) (upper_case_identifier) (eq) 
+    (type_expression (record_type (left_brace) (field_type (lower_case_identifier) (colon) 
+    (type_expression (type_ref (upper_case_qid (upper_case_identifier))))) (right_brace)))
+)
+
+)

@@ -1,8 +1,13 @@
-enum key dict =
-  custom key <| \stringList ->
-    case stringList of
-      [str] ->
-        Dict.get str dict
 
-      _ ->
-        Nothing
+type alias Model =
+    { data : Data
+    }
+
+
+test : Model -> String
+test model = model.data
+
+
+type alias Model =
+    { data : Data
+    }
