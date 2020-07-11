@@ -1,11 +1,13 @@
 module Main exposing (Msg(..), main, update, view)
+-- ^ keyword.other.elm
+--              ^ keyword.other.elm
 
 import Browser
-// ^ keyword
+-- ^ meta.import.elm
 import Html exposing (Html, button, div, text)
-// ^ keyword
+-- ^ meta.import.elm
 import Html.Events exposing (onClick)
-// ^ keyword
+-- ^ meta.import.elm
 
 
 main =
@@ -13,22 +15,38 @@ main =
 
 
 type Msg
+-- <- @keyword.type.elm
+--    ^ @storage.type.elm
     = Increment
+    -- ^ constant.type-constructor.elm
     | Decrement
+    -- ^ constant.type-constructor.elm
 
+update : Msg -> Model
+-- <- entity.name.function.elm
+--     ^ keyword.other.elm
+--       ^ storage.type.elm
+--            ^ keyword.operator.arrow.elm
+--                ^ storage.type.elm
 
 update msg model =
     case msg of
+    --       ^ keyword.control.elm
         Increment ->
+                -- ^ keyword.operator.arrow.elm
             model + 1
+            --    ^ keyword.operator.elm
 
         Decrement ->
             model - 1
-
+            --      ^ constant.numeric.elm
 
 view model =
+    --     ^ keyword.operator.assignment.elm
     div []
         [ button [ onClick Decrement ] [ text "-" ]
+        --                                    ^ punctuation.definition.string.begin.elm
+        --                                     ^ string.elm
         , div [] [ text (String.fromInt model) ]
         , button [ onClick Increment ] [ text "+" ]
         ]
