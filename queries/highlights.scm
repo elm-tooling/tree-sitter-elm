@@ -21,9 +21,7 @@
 (port) @keyword.other.port.elm
 
 (type_annotation(lower_case_identifier) @entity.name.function.elm)
-(type_annotation(type_expression(type_ref(upper_case_qid))) @storage.type.elm)
 (port_annotation(lower_case_identifier) @entity.name.function.elm)
-(port_annotation(type_expression(type_ref(upper_case_qid))) @storage.type.elm)
 
 (operator_identifier) @keyword.operator.elm
 (eq) @keyword.operator.assignment.elm
