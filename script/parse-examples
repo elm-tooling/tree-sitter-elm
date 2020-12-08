@@ -47,7 +47,7 @@ for example in $all_examples; do
 done
 
 start=`date +%s.%N`
-tree_sitter_report=$(echo ${examples_to_parse[@]} | xargs -n 100000 npx tree-sitter parse --quiet --stat)
+tree_sitter_report=$(echo ${examples_to_parse[@]} | xargs -n 100000 npx tree-sitter parse --quiet --stat --time)
 end=`date +%s.%N`
 
 ret_code=$?

@@ -34,7 +34,7 @@ done
 
 
 start=`date +%s.%N`
-tree_sitter_report=$(npx tree-sitter parse examples-full/**/*.elm --quiet --stat)
+tree_sitter_report=$(npx tree-sitter parse examples-full/**/*.elm --quiet --stat --time)
 end=`date +%s.%N`
 
 ret_code=$?
