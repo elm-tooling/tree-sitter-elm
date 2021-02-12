@@ -100,31 +100,20 @@ five = something
     (function_declaration_left (lower_case_identifier))
     (eq)
     (string_constant_expr
-      (open_quote)
       (string_escape)
-      (regular_string_part)
-      (close_quote)
     )
   )
   (value_declaration
     (function_declaration_left (lower_case_identifier))
     (eq)
     (string_constant_expr
-      (open_quote)
-      (regular_string_part)
       (string_escape)
-      (regular_string_part)
-      (regular_string_part)
-      (close_quote)
     )
   )
   (value_declaration
     (function_declaration_left (lower_case_identifier))
     (eq)
     (char_constant_expr
-      (open_char)
-      (regular_string_part)
-      (close_char)
     )
   )
   (block_comment)

@@ -19,10 +19,7 @@ namespace
         MINUS_WITHOUT_TRAILING_WHITESPACE,
         BLOCK_COMMENT,
         LINE_COMMENT,
-        OPEN_QUOTE,
-        CLOSE_QUOTE,
-        OPEN_QUOTE_MULTILINE,
-        CLOSE_QUOTE_MULTILINE,
+        STRING_ESCAPE,
         GLSL_CONTENT
     };
 
@@ -43,7 +40,6 @@ namespace
             i += stack_size;
 
             buffer[i++] = indent_length;
-            buffer[i++] = in_string;
 
             vector<uint16_t>::iterator
                 iter = indent_length_stack.begin() + 1,
@@ -72,7 +68,6 @@ namespace
                 memcpy(runback.data(), &buffer[i], runback_count);
                 i += runback_count;
                 indent_length = buffer[i++];
-                in_string = buffer[i++];
                 for (; i < length; i++)
                 {
                     indent_length_stack.push_back(buffer[i]);
@@ -95,7 +90,7 @@ namespace
             return lexer->lookahead == ' ' || lexer->lookahead == '\r' || lexer->lookahead == '\n';
         }
 
-        bool scan_comment(TSLexer *lexer)
+        bool scan_block_comment(TSLexer *lexer)
         {
             lexer->mark_end(lexer);
             if (lexer->lookahead != '{')
@@ -112,7 +107,7 @@ namespace
                 switch (lexer->lookahead)
                 {
                 case '{':
-                    scan_comment(lexer);
+                    scan_block_comment(lexer);
                     break;
                 case '-':
                     advance(lexer);
@@ -129,47 +124,6 @@ namespace
                     advance(lexer);
                 }
             }
-        }
-
-        bool scan_quote(TSLexer *lexer, TokenType quoteToken, TokenType quoteTokenMultiline, bool closingQuote)
-        {
-            uint8_t newInString = closingQuote ? 0 : 1;
-            uint8_t newInStringMultiline = closingQuote ? 0 : 2;
-
-            if (lexer->lookahead == '"')
-            {
-                advance(lexer);
-                lexer->mark_end(lexer);
-                if (lexer->lookahead == '"')
-                {
-                    advance(lexer);
-
-                    if (lexer->lookahead == '"')
-                    {
-                        advance(lexer);
-                        lexer->result_symbol = quoteTokenMultiline;
-                        in_string = newInStringMultiline;
-                        lexer->mark_end(lexer);
-                        return true;
-                    }
-                    else if (in_string != 2)
-                    {
-                        lexer->result_symbol = quoteToken;
-                        in_string = newInString;
-                        return true;
-                    }
-                }
-                else if (in_string != 2)
-                {
-
-                    lexer->result_symbol = quoteToken;
-                    in_string = newInString;
-                    lexer->mark_end(lexer);
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         int checkForIn(TSLexer *lexer, const bool *valid_symbols)
@@ -284,7 +238,7 @@ namespace
             // Handle minus without a whitespace for negate and line comments as both start with '-'
             if (valid_symbols[MINUS_WITHOUT_TRAILING_WHITESPACE] || valid_symbols[LINE_COMMENT])
             {
-                if (in_string == 0 && lexer->lookahead == '-')
+                if (!valid_symbols[STRING_ESCAPE] && lexer->lookahead == '-')
                 {
                     advance(lexer);
                     auto lookahead = lexer->lookahead;
@@ -295,7 +249,7 @@ namespace
 
                         return true;
                     }
-                    else if (in_string == 0 && lexer->lookahead == '-') // Handle line comment if we're not in a string
+                    else if (lexer->lookahead == '-') // Handle line comment if we're not in a string
                     {
                         advance(lexer);
                         lexer->result_symbol = LINE_COMMENT;
@@ -322,7 +276,7 @@ namespace
                 lexer->result_symbol = VIRTUAL_OPEN_SECTION;
                 return true;
             }
-            else if (has_newline && !in_string)
+            else if (has_newline)
             {
                 // We had a newline now it's time to check if we need to add multiple tokens to get back up to the right level
                 runback.clear();
@@ -377,24 +331,16 @@ namespace
             }
 
             // Handle block comments if we're not in a string
-            if (in_string == 0 && valid_symbols[BLOCK_COMMENT] && scan_comment(lexer))
+            if (valid_symbols[BLOCK_COMMENT] &&
+                !valid_symbols[STRING_ESCAPE] // don't allow block comments inside of strings
+                && scan_block_comment(lexer))
             {
                 lexer->mark_end(lexer);
                 lexer->result_symbol = BLOCK_COMMENT;
                 return true;
             }
 
-            // Handle string quotes for multiline and normal strings
-            if (in_string == 0 && (valid_symbols[OPEN_QUOTE] || valid_symbols[OPEN_QUOTE_MULTILINE]))
-            {
-                return scan_quote(lexer, OPEN_QUOTE, OPEN_QUOTE_MULTILINE, false);
-            }
-            if (in_string != 0 && (valid_symbols[CLOSE_QUOTE] || valid_symbols[CLOSE_QUOTE_MULTILINE]))
-            {
-                return scan_quote(lexer, CLOSE_QUOTE, CLOSE_QUOTE_MULTILINE, true);
-            }
-
-            if (in_string == 0 && valid_symbols[GLSL_CONTENT])
+            if (valid_symbols[GLSL_CONTENT])
             {
                 lexer->result_symbol = GLSL_CONTENT;
                 while (true)
@@ -428,8 +374,6 @@ namespace
         vector<uint16_t> indent_length_stack;
         // Stack of 0 - for possible VIRTUAL_END_DECL or 1 - for possible VIRTUAL_END_SECTION
         vector<uint8_t> runback;
-        // 0 - Not in a string | 1 - in a normal string | 2 - in a multiline string
-        uint8_t in_string = 0;
     };
 
 } // namespace

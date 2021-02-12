@@ -50,13 +50,8 @@
 
 ; strings
 (string_escape) @constant.character.escape.elm
-
-(open_quote) @punctuation.definition.string.begin.elm
-(close_quote) @punctuation.definition.string.end.elm
-(regular_string_part) @string.elm
-
-(open_char) @punctuation.definition.char.begin.elm
-(close_char) @punctuation.definition.char.end.elm
+(string_constant_expr) @string.elm
+(char_constant_expr) @char.elm
 
 
 ; glsl

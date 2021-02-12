@@ -1,6 +1,11 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
+const PREC = {
+  COMMENT: 1,
+  STRING: 2, // In a string, prefer string characters over comments
+};
+
 module.exports = grammar({
   name: "elm",
 
@@ -19,10 +24,7 @@ module.exports = grammar({
     $.minus_without_trailing_whitespace,
     $.block_comment,
     $.line_comment,
-    $.open_quote,
-    $.close_quote,
-    $.open_quote_multiline,
-    $.close_quote_multiline,
+    $.string_escape,
     $.glsl_content,
   ],
 
@@ -439,43 +441,40 @@ module.exports = grammar({
 
     char_constant_expr: ($) =>
       seq(
-        $.open_char,
-        choice(
-          alias($.regular_char, $.regular_string_part),
-          $.string_escape,
-          $.invalid_string_escape
-        ),
-        $.close_char
+        "'",
+        choice(token(/[^\\\n']/), $.string_escape, $.invalid_string_escape),
+        "'"
       ),
-
-    open_char: ($) => $._char_quote,
-
-    close_char: ($) => $._char_quote,
 
     number_constant_expr: ($) => $.number_literal,
 
     string_constant_expr: ($) =>
       choice(
-        seq($.open_quote, optional($._string_parts), $.close_quote),
         seq(
-          alias($.open_quote_multiline, $.open_quote),
-          optional($._string_parts_multiline),
-          alias($.close_quote_multiline, $.close_quote)
+          '"""',
+          repeat(
+            choice(
+              token.immediate(
+                prec(PREC.STRING, choice(/[^\\"]/, /"[^"]/, /""[^"]/))
+              ),
+              $.string_escape,
+              $.invalid_string_escape
+            )
+          ),
+          '"""'
+        ),
+        seq(
+          '"',
+          repeat(
+            choice(
+              token.immediate(prec(PREC.STRING, /[^\\"\n]/)),
+              $.string_escape,
+              $.invalid_string_escape
+            )
+          ),
+          '"'
         )
       ),
-
-    _string_part: ($) =>
-      choice($.regular_string_part, $.string_escape, $.invalid_string_escape),
-
-    _string_part_multiline: ($) =>
-      choice(
-        alias($.regular_string_part_multiline, $.regular_string_part),
-        $.string_escape,
-        $.invalid_string_escape
-      ),
-
-    _string_parts: ($) => repeat1($._string_part),
-    _string_parts_multiline: ($) => repeat1($._string_part_multiline),
 
     anonymous_function_expr: ($) =>
       seq(
@@ -701,10 +700,6 @@ module.exports = grammar({
       choice(/-?[0-9]+(\.[0-9]+)?(e-?[0-9]+)?/, $._hex_literal),
 
     _hex_literal: ($) => /0x[0-9A-Fa-f]+/,
-
-    regular_char: ($) => /[^\\\n']/,
-    regular_string_part: ($) => choice(/[^\\\"\n]+/, /\"/),
-    regular_string_part_multiline: ($) => choice(/[^\\\"]+/, /\"\"?/),
 
     string_escape: ($) => /\\(u\{[0-9A-Fa-f]{4,6}\}|[nrt\"'\\])/,
 

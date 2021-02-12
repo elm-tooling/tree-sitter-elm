@@ -43,7 +43,6 @@ view model =
     --     ^ keyword.operator.assignment.elm
     div []
         [ button [ onClick Decrement ] [ text "-" ]
-        --                                    ^ punctuation.definition.string.begin.elm
         --                                     ^ string.elm
         , div [] [ text (String.fromInt model) ]
         , button [ onClick Increment ] [ text "+" ]

@@ -489,23 +489,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
-      "required": true,
+      "multiple": false,
+      "required": false,
       "types": [
         {
-          "type": "close_char",
-          "named": true
-        },
-        {
           "type": "invalid_string_escape",
-          "named": true
-        },
-        {
-          "type": "open_char",
-          "named": true
-        },
-        {
-          "type": "regular_string_part",
           "named": true
         },
         {
@@ -514,11 +502,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "close_char",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "cons_pattern",
@@ -1851,11 +1834,6 @@
     "fields": {}
   },
   {
-    "type": "open_char",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "operator",
     "named": true,
     "fields": {},
@@ -2285,32 +2263,15 @@
     }
   },
   {
-    "type": "regular_string_part",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "string_constant_expr",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "close_quote",
-          "named": true
-        },
-        {
           "type": "invalid_string_escape",
-          "named": true
-        },
-        {
-          "type": "open_quote",
-          "named": true
-        },
-        {
-          "type": "regular_string_part",
           "named": true
         },
         {
@@ -3105,7 +3066,19 @@
     }
   },
   {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "\"\"\"",
+    "named": false
+  },
+  {
     "type": "&&",
+    "named": false
+  },
+  {
+    "type": "'",
     "named": false
   },
   {
@@ -3209,10 +3182,6 @@
     "named": true
   },
   {
-    "type": "close_quote",
-    "named": true
-  },
-  {
     "type": "colon",
     "named": true
   },
@@ -3306,10 +3275,6 @@
   },
   {
     "type": "of",
-    "named": true
-  },
-  {
-    "type": "open_quote",
     "named": true
   },
   {
