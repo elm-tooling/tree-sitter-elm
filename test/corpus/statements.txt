@@ -3,7 +3,7 @@ Function statement with function call and inline record
 ================================================================================
 
 main =
-    Browser.sandbox 
+    Browser.sandbox
     { init = 0
     , update = update
     , view = view }
@@ -18,7 +18,7 @@ main =
     (function_call_expr
       (value_expr
         (value_qid
-          (upper_case_identifier)
+          (module_name_segment)
           (dot)
           (lower_case_identifier)))
       (record_expr
@@ -101,7 +101,7 @@ view model =
                 (function_call_expr
                   (value_expr
                     (value_qid
-                      (upper_case_identifier)
+                      (module_name_segment)
                       (dot)
                       (lower_case_identifier)))
                   (value_expr

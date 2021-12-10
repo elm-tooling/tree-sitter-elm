@@ -109,7 +109,7 @@ type ElementProblem
       (upper_case_identifier)
       (type_ref
         (upper_case_qid
-          (upper_case_identifier)
+          (module_name_segment)
           (dot)
           (upper_case_identifier)))))
   (type_declaration

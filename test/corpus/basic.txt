@@ -117,7 +117,7 @@ xsOpp =
     (function_call_expr
       (value_expr
         (value_qid
-          (upper_case_identifier)
+          (module_name_segment)
           (dot)
           (lower_case_identifier)))
       (negate_expr

@@ -51,7 +51,7 @@ letExample =
         (function_call_expr
           (value_expr
             (value_qid
-              (upper_case_identifier)
+              (module_name_segment)
               (dot)
               (lower_case_identifier)))
           (value_expr
@@ -91,7 +91,7 @@ letExample =
         (function_call_expr
           (value_expr
             (value_qid
-              (upper_case_identifier)
+              (module_name_segment)
               (dot)
               (lower_case_identifier)))
           (value_expr
@@ -232,7 +232,7 @@ routeToString page =
         (function_call_expr
           (value_expr
             (value_qid
-              (upper_case_identifier)
+              (module_name_segment)
               (dot)
               (lower_case_identifier)))
           (string_constant_expr
@@ -319,7 +319,7 @@ init session =
           (function_call_expr
             (value_expr
               (value_qid
-                (upper_case_identifier)
+                (module_name_segment)
                 (dot)
                 (lower_case_identifier)))
             (value_expr
@@ -357,12 +357,12 @@ init session =
         (function_call_expr
           (value_expr
             (value_qid
-              (upper_case_identifier)
+              (module_name_segment)
               (dot)
               (lower_case_identifier)))
           (value_expr
             (value_qid
-              (upper_case_identifier)
+              (module_name_segment)
               (dot)
               (lower_case_identifier)))))
       (value_expr
@@ -441,7 +441,7 @@ letExample =
         (function_call_expr
           (value_expr
             (value_qid
-              (upper_case_identifier)
+              (module_name_segment)
               (dot)
               (lower_case_identifier)))
           (value_expr
@@ -598,7 +598,7 @@ main =
         (function_call_expr
           (value_expr
             (value_qid
-              (upper_case_identifier)
+              (module_name_segment)
               (dot)
               (lower_case_identifier)))
           (parenthesized_expr
@@ -789,7 +789,7 @@ init maybeSavedGame =
         (eq)
         (value_expr
           (value_qid
-            (upper_case_identifier)
+            (module_name_segment)
             (dot)
             (lower_case_identifier))))
       (value_declaration
@@ -799,7 +799,7 @@ init maybeSavedGame =
         (function_call_expr
           (value_expr
             (value_qid
-              (upper_case_identifier)
+              (module_name_segment)
               (dot)
               (lower_case_identifier)))
           (string_constant_expr

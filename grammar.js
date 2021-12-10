@@ -131,15 +131,23 @@ module.exports = grammar({
 
     upper_case_qid: ($) =>
       prec.right(
-        seq(
+        choice(
           $.upper_case_identifier,
-          repeat(
-            seq(
-              alias($._dot_without_leading_whitespace, $.dot),
-              alias(
-                $._upper_case_identifier_without_leading_whitespace,
-                $.upper_case_identifier
+          seq(
+            alias($.upper_case_identifier, $.module_name_segment),
+            alias($._dot_without_leading_whitespace, $.dot),
+            repeat(
+              seq(
+                alias(
+                  $._upper_case_identifier_without_leading_whitespace,
+                  $.module_name_segment
+                ),
+                alias($._dot_without_leading_whitespace, $.dot)
               )
+            ),
+            alias(
+              $._upper_case_identifier_without_leading_whitespace,
+              $.upper_case_identifier
             )
           )
         )
@@ -149,13 +157,13 @@ module.exports = grammar({
       choice(
         $.lower_case_identifier,
         seq(
-          $.upper_case_identifier,
+          alias($.upper_case_identifier, $.module_name_segment),
           alias($._dot_without_leading_whitespace, $.dot),
           repeat(
             seq(
               alias(
                 $._upper_case_identifier_without_leading_whitespace,
-                $.upper_case_identifier
+                $.module_name_segment
               ),
               alias($._dot_without_leading_whitespace, $.dot)
             )
@@ -185,7 +193,11 @@ module.exports = grammar({
         field("exposing", optional($.exposing_list))
       ),
 
-    as_clause: ($) => seq($.as, field("name", $.upper_case_identifier)),
+    as_clause: ($) =>
+      seq(
+        $.as,
+        field("name", alias($.upper_case_identifier, $.module_name_segment))
+      ),
 
     // TOP-LEVEL DECLARATION
 

@@ -25,7 +25,7 @@ onAnimationFrame =
       (type_expression
         (type_ref
           (upper_case_qid
-            (upper_case_identifier)
+            (module_name_segment)
             (dot)
             (upper_case_identifier)))
         (arrow)
@@ -43,7 +43,7 @@ onAnimationFrame =
     (eq)
     (value_expr
       (value_qid
-        (upper_case_identifier)
+        (module_name_segment)
         (dot)
         (lower_case_identifier)))))
 
@@ -125,7 +125,7 @@ view model =
   (import_clause
     (import)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier))
     (exposing_list
@@ -139,7 +139,7 @@ view model =
     (function_call_expr
       (value_expr
         (value_qid
-          (upper_case_identifier)
+          (module_name_segment)
           (dot)
           (lower_case_identifier)))
       (record_expr
@@ -258,7 +258,7 @@ view model =
                 (function_call_expr
                   (value_expr
                     (value_qid
-                      (upper_case_identifier)
+                      (module_name_segment)
                       (dot)
                       (lower_case_identifier)))
                   (value_expr

@@ -16,15 +16,15 @@ import Html.Events.Test
   (import_clause
     (import)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier)))
   (import_clause
     (import)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier))))
 
@@ -43,7 +43,7 @@ import Html exposing (Html, button, div, text)
   (import_clause
     (import)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier))
     (exposing_list
@@ -53,7 +53,7 @@ import Html exposing (Html, button, div, text)
   (import_clause
     (import)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier))
     (exposing_list
@@ -62,7 +62,7 @@ import Html exposing (Html, button, div, text)
   (import_clause
     (import)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier))
     (exposing_list
@@ -137,12 +137,12 @@ import Html.Attributes as Attr
   (import_clause
     (import)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier))
     (as_clause
       (as)
-      (upper_case_identifier))))
+      (module_name_segment))))
 
 ================================================================================
 Import statements with as clause
@@ -158,12 +158,12 @@ import Remedy.ScreenList as ScreenList
   (import_clause
     (import)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier))
     (as_clause
       (as)
-      (upper_case_identifier))
+      (module_name_segment))
     (exposing_list
       (exposing)
       (exposed_type
@@ -171,12 +171,12 @@ import Remedy.ScreenList as ScreenList
   (import_clause
     (import)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier))
     (as_clause
       (as)
-      (upper_case_identifier))
+      (module_name_segment))
     (exposing_list
       (exposing)
       (exposed_type
@@ -184,12 +184,12 @@ import Remedy.ScreenList as ScreenList
   (import_clause
     (import)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier))
     (as_clause
       (as)
-      (upper_case_identifier))))
+      (module_name_segment))))
 
 ================================================================================
 Import statements with operator statement
@@ -203,12 +203,12 @@ import Url.Parser as Parser exposing ((</>), Parser, oneOf, s, string)
   (import_clause
     (import)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier))
     (as_clause
       (as)
-      (upper_case_identifier))
+      (module_name_segment))
     (exposing_list
       (exposing)
       (exposed_operator

@@ -396,37 +396,69 @@
       "type": "PREC_RIGHT",
       "value": 0,
       "content": {
-        "type": "SEQ",
+        "type": "CHOICE",
         "members": [
           {
             "type": "SYMBOL",
             "name": "upper_case_identifier"
           },
           {
-            "type": "REPEAT",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_dot_without_leading_whitespace"
-                  },
-                  "named": true,
-                  "value": "dot"
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "upper_case_identifier"
                 },
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_upper_case_identifier_without_leading_whitespace"
-                  },
-                  "named": true,
-                  "value": "upper_case_identifier"
+                "named": true,
+                "value": "module_name_segment"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_dot_without_leading_whitespace"
+                },
+                "named": true,
+                "value": "dot"
+              },
+              {
+                "type": "REPEAT",
+                "content": {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_upper_case_identifier_without_leading_whitespace"
+                      },
+                      "named": true,
+                      "value": "module_name_segment"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_dot_without_leading_whitespace"
+                      },
+                      "named": true,
+                      "value": "dot"
+                    }
+                  ]
                 }
-              ]
-            }
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_upper_case_identifier_without_leading_whitespace"
+                },
+                "named": true,
+                "value": "upper_case_identifier"
+              }
+            ]
           }
         ]
       }
@@ -442,8 +474,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "upper_case_identifier"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "upper_case_identifier"
+              },
+              "named": true,
+              "value": "module_name_segment"
             },
             {
               "type": "ALIAS",
@@ -466,7 +503,7 @@
                       "name": "_upper_case_identifier_without_leading_whitespace"
                     },
                     "named": true,
-                    "value": "upper_case_identifier"
+                    "value": "module_name_segment"
                   },
                   {
                     "type": "ALIAS",
@@ -571,8 +608,13 @@
           "type": "FIELD",
           "name": "name",
           "content": {
-            "type": "SYMBOL",
-            "name": "upper_case_identifier"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "upper_case_identifier"
+            },
+            "named": true,
+            "value": "module_name_segment"
           }
         }
       ]

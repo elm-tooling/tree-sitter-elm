@@ -139,7 +139,7 @@
         "required": true,
         "types": [
           {
-            "type": "upper_case_identifier",
+            "type": "module_name_segment",
             "named": true
           }
         ]
@@ -2622,6 +2622,10 @@
           "named": true
         },
         {
+          "type": "module_name_segment",
+          "named": true
+        },
+        {
           "type": "upper_case_identifier",
           "named": true
         }
@@ -2787,7 +2791,7 @@
           "named": true
         },
         {
-          "type": "upper_case_identifier",
+          "type": "module_name_segment",
           "named": true
         }
       ]
@@ -2991,6 +2995,10 @@
   },
   {
     "type": "module",
+    "named": true
+  },
+  {
+    "type": "module_name_segment",
     "named": true
   },
   {

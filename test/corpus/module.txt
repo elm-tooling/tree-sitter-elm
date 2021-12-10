@@ -27,7 +27,7 @@ module Page.View exposing (..)
   (module_declaration
     (module)
     (upper_case_qid
-      (upper_case_identifier)
+      (module_name_segment)
       (dot)
       (upper_case_identifier))
     (exposing_list
