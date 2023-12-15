@@ -2379,6 +2379,10 @@
           "named": true
         },
         {
+          "type": "line_comment",
+          "named": true
+        },
+        {
           "type": "type",
           "named": true
         }
