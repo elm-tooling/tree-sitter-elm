@@ -231,6 +231,7 @@ module.exports = grammar({
           field("typeName", repeat($.lower_type_name)),
           $.eq,
           field("unionVariant", $.union_variant),
+          optional($.line_comment),
           repeat($._more_union_variants)
         )
       ),
@@ -246,7 +247,11 @@ module.exports = grammar({
       ),
 
     _more_union_variants: ($) =>
-      seq("|", field("unionVariant", $.union_variant)),
+      seq(
+        "|",
+        field("unionVariant", $.union_variant),
+        optional($.line_comment)
+      ),
 
     type_alias_declaration: ($) =>
       seq(
