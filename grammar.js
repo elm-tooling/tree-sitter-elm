@@ -231,7 +231,6 @@ module.exports = grammar({
           field("typeName", repeat($.lower_type_name)),
           $.eq,
           field("unionVariant", $.union_variant),
-          optional($.line_comment),
           repeat($._more_union_variants)
         )
       ),
@@ -247,11 +246,7 @@ module.exports = grammar({
       ),
 
     _more_union_variants: ($) =>
-      seq(
-        "|",
-        field("unionVariant", $.union_variant),
-        optional($.line_comment)
-      ),
+      seq("|", field("unionVariant", $.union_variant)),
 
     type_alias_declaration: ($) =>
       seq(
@@ -272,6 +267,7 @@ module.exports = grammar({
 
     _single_type_expression: ($) =>
       choice(
+        $.line_comment,
         field("part", alias($.type_ref_without_args, $.type_ref)),
         field("part", $.type_variable),
         field("part", $.record_type),
