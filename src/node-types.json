@@ -2425,10 +2425,6 @@
           "named": true
         },
         {
-          "type": "line_comment",
-          "named": true
-        },
-        {
           "type": "type_ref",
           "named": true
         }
@@ -2467,13 +2463,9 @@
       }
     },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
-        {
-          "type": "line_comment",
-          "named": true
-        },
         {
           "type": "upper_case_qid",
           "named": true
