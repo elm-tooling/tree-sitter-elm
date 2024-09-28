@@ -1125,12 +1125,18 @@ all = describe "parsering"
 Case wrapped in parenthesis
 ================================================================================
 
-flipBy how (Plane (width, height) _ as plane) =
+flipBy how (Plane { width, height } as plane) =
     plane |>
         transform
             (case how of
-                Horizontal -> \(x, y) -> (width - 1 - x, y)
-                Vertical -> \(x, y) -> (x, height - 1 - y))
+                Horizontal -> \{x, y} ->
+                    { width = width - 1 - x
+                    , height = y
+                    }
+                Vertical -> \{x, y} ->
+                    { width = x
+                    , height = height - 1 - y
+                    })
 
 
 --------------------------------------------------------------------------------
@@ -1145,15 +1151,11 @@ flipBy how (Plane (width, height) _ as plane) =
         (union_pattern
           (upper_case_qid
             (upper_case_identifier))
-          (tuple_pattern
-            (pattern
-              (lower_pattern
-                (lower_case_identifier)))
-            (pattern
-              (lower_pattern
-                (lower_case_identifier))))
-          (anything_pattern
-            (underscore)))
+          (record_pattern
+            (lower_pattern
+              (lower_case_identifier))
+            (lower_pattern
+              (lower_case_identifier))))
         (as)
         (lower_pattern
           (lower_case_identifier))))
@@ -1183,31 +1185,35 @@ flipBy how (Plane (width, height) _ as plane) =
             (anonymous_function_expr
               (backslash)
               (pattern
-                (tuple_pattern
-                  (pattern
-                    (lower_pattern
-                      (lower_case_identifier)))
-                  (pattern
-                    (lower_pattern
-                      (lower_case_identifier)))))
+                (record_pattern
+                  (lower_pattern
+                    (lower_case_identifier))
+                  (lower_pattern
+                    (lower_case_identifier))))
               (arrow)
-              (tuple_expr
-                (bin_op_expr
+              (record_expr
+                (field
+                  (lower_case_identifier)
+                  (eq)
+                  (bin_op_expr
+                    (value_expr
+                      (value_qid
+                        (lower_case_identifier)))
+                    (operator
+                      (operator_identifier))
+                    (number_constant_expr
+                      (number_literal))
+                    (operator
+                      (operator_identifier))
+                    (value_expr
+                      (value_qid
+                        (lower_case_identifier)))))
+                (field
+                  (lower_case_identifier)
+                  (eq)
                   (value_expr
                     (value_qid
-                      (lower_case_identifier)))
-                  (operator
-                    (operator_identifier))
-                  (number_constant_expr
-                    (number_literal))
-                  (operator
-                    (operator_identifier))
-                  (value_expr
-                    (value_qid
-                      (lower_case_identifier))))
-                (value_expr
-                  (value_qid
-                    (lower_case_identifier))))))
+                      (lower_case_identifier)))))))
           (case_of_branch
             (pattern
               (union_pattern
@@ -1217,31 +1223,35 @@ flipBy how (Plane (width, height) _ as plane) =
             (anonymous_function_expr
               (backslash)
               (pattern
-                (tuple_pattern
-                  (pattern
-                    (lower_pattern
-                      (lower_case_identifier)))
-                  (pattern
-                    (lower_pattern
-                      (lower_case_identifier)))))
+                (record_pattern
+                  (lower_pattern
+                    (lower_case_identifier))
+                  (lower_pattern
+                    (lower_case_identifier))))
               (arrow)
-              (tuple_expr
-                (value_expr
-                  (value_qid
-                    (lower_case_identifier)))
-                (bin_op_expr
+              (record_expr
+                (field
+                  (lower_case_identifier)
+                  (eq)
                   (value_expr
                     (value_qid
-                      (lower_case_identifier)))
-                  (operator
-                    (operator_identifier))
-                  (number_constant_expr
-                    (number_literal))
-                  (operator
-                    (operator_identifier))
-                  (value_expr
-                    (value_qid
-                      (lower_case_identifier))))))))))))
+                      (lower_case_identifier))))
+                (field
+                  (lower_case_identifier)
+                  (eq)
+                  (bin_op_expr
+                    (value_expr
+                      (value_qid
+                        (lower_case_identifier)))
+                    (operator
+                      (operator_identifier))
+                    (number_constant_expr
+                      (number_literal))
+                    (operator
+                      (operator_identifier))
+                    (value_expr
+                      (value_qid
+                        (lower_case_identifier)))))))))))))
 
 ================================================================================
 Case with of followed by comment

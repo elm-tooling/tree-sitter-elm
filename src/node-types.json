@@ -72,10 +72,6 @@
             "named": true
           },
           {
-            "type": "tuple_expr",
-            "named": true
-          },
-          {
             "type": "unit_expr",
             "named": true
           },
@@ -225,10 +221,6 @@
             "named": true
           },
           {
-            "type": "tuple_expr",
-            "named": true
-          },
-          {
             "type": "unit_expr",
             "named": true
           },
@@ -315,10 +307,6 @@
           },
           {
             "type": "string_constant_expr",
-            "named": true
-          },
-          {
-            "type": "tuple_expr",
             "named": true
           },
           {
@@ -436,10 +424,6 @@
             "named": true
           },
           {
-            "type": "tuple_expr",
-            "named": true
-          },
-          {
             "type": "unit_expr",
             "named": true
           },
@@ -546,10 +530,6 @@
           },
           {
             "type": "string_constant_expr",
-            "named": true
-          },
-          {
-            "type": "tuple_pattern",
             "named": true
           },
           {
@@ -737,10 +717,6 @@
           },
           {
             "type": "string_constant_expr",
-            "named": true
-          },
-          {
-            "type": "tuple_expr",
             "named": true
           },
           {
@@ -987,10 +963,6 @@
             "named": true
           },
           {
-            "type": "tuple_expr",
-            "named": true
-          },
-          {
             "type": "unit_expr",
             "named": true
           },
@@ -1074,10 +1046,6 @@
           },
           {
             "type": "string_constant_expr",
-            "named": true
-          },
-          {
-            "type": "tuple_pattern",
             "named": true
           },
           {
@@ -1168,10 +1136,6 @@
           },
           {
             "type": "string_constant_expr",
-            "named": true
-          },
-          {
-            "type": "tuple_expr",
             "named": true
           },
           {
@@ -1359,10 +1323,6 @@
             "named": true
           },
           {
-            "type": "tuple_expr",
-            "named": true
-          },
-          {
             "type": "unit_expr",
             "named": true
           },
@@ -1464,10 +1424,6 @@
           },
           {
             "type": "string_constant_expr",
-            "named": true
-          },
-          {
-            "type": "tuple_expr",
             "named": true
           },
           {
@@ -1649,10 +1605,6 @@
           "named": true
         },
         {
-          "type": "tuple_expr",
-          "named": true
-        },
-        {
           "type": "unit_expr",
           "named": true
         },
@@ -1802,10 +1754,6 @@
             "named": true
           },
           {
-            "type": "tuple_expr",
-            "named": true
-          },
-          {
             "type": "unit_expr",
             "named": true
           },
@@ -1859,10 +1807,6 @@
           },
           {
             "type": "string_constant_expr",
-            "named": true
-          },
-          {
-            "type": "tuple_pattern",
             "named": true
           },
           {
@@ -2052,136 +1996,6 @@
     }
   },
   {
-    "type": "tuple_expr",
-    "named": true,
-    "fields": {
-      "expr": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "anonymous_function_expr",
-            "named": true
-          },
-          {
-            "type": "bin_op_expr",
-            "named": true
-          },
-          {
-            "type": "case_of_expr",
-            "named": true
-          },
-          {
-            "type": "char_constant_expr",
-            "named": true
-          },
-          {
-            "type": "field_access_expr",
-            "named": true
-          },
-          {
-            "type": "field_accessor_function_expr",
-            "named": true
-          },
-          {
-            "type": "function_call_expr",
-            "named": true
-          },
-          {
-            "type": "if_else_expr",
-            "named": true
-          },
-          {
-            "type": "let_in_expr",
-            "named": true
-          },
-          {
-            "type": "list_expr",
-            "named": true
-          },
-          {
-            "type": "negate_expr",
-            "named": true
-          },
-          {
-            "type": "number_constant_expr",
-            "named": true
-          },
-          {
-            "type": "operator_as_function_expr",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expr",
-            "named": true
-          },
-          {
-            "type": "record_expr",
-            "named": true
-          },
-          {
-            "type": "string_constant_expr",
-            "named": true
-          },
-          {
-            "type": "tuple_expr",
-            "named": true
-          },
-          {
-            "type": "unit_expr",
-            "named": true
-          },
-          {
-            "type": "value_expr",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "tuple_pattern",
-    "named": true,
-    "fields": {
-      "pattern": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "pattern",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "tuple_type",
-    "named": true,
-    "fields": {
-      "typeExpression": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "type_expression",
-            "named": true
-          }
-        ]
-      },
-      "unitExpr": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "unit_expr",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "type_alias_declaration",
     "named": true,
     "fields": {
@@ -2334,10 +2148,6 @@
             "named": true
           },
           {
-            "type": "tuple_type",
-            "named": true
-          },
-          {
             "type": "type_expression",
             "named": true
           },
@@ -2377,10 +2187,6 @@
         "types": [
           {
             "type": "record_type",
-            "named": true
-          },
-          {
-            "type": "tuple_type",
             "named": true
           },
           {
@@ -2477,10 +2283,6 @@
             "named": true
           },
           {
-            "type": "tuple_pattern",
-            "named": true
-          },
-          {
             "type": "unit_expr",
             "named": true
           }
@@ -2518,10 +2320,6 @@
         "types": [
           {
             "type": "record_type",
-            "named": true
-          },
-          {
-            "type": "tuple_type",
             "named": true
           },
           {
@@ -2644,10 +2442,6 @@
           },
           {
             "type": "string_constant_expr",
-            "named": true
-          },
-          {
-            "type": "tuple_expr",
             "named": true
           },
           {

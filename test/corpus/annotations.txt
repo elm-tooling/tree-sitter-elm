@@ -84,9 +84,9 @@ main =
               (lower_case_identifier))))))))
 
 ================================================================================
-Annotation for func with parameters returning tuple
+Annotation for func with parameters returning object
 ================================================================================
-init : Maybe Viewer -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init : Maybe Viewer -> Url -> Nav.Key -> { model: Model, cmd: Cmd Msg }
 init maybeViewer url navKey =
     changeRouteTo (Route.fromUrl url)
         (Redirect (Session.fromViewer navKey maybeViewer))
@@ -114,18 +114,25 @@ init maybeViewer url navKey =
           (dot)
           (upper_case_identifier)))
       (arrow)
-      (tuple_type
-        (type_expression
-          (type_ref
-            (upper_case_qid
-              (upper_case_identifier))))
-        (type_expression
-          (type_ref
-            (upper_case_qid
-              (upper_case_identifier))
+      (record_type
+        (field_type
+          (lower_case_identifier)
+            (colon)
+            (type_expression
+              (type_ref
+              (upper_case_qid
+                (upper_case_identifier)))))
+        (field_type
+          (lower_case_identifier)
+          (colon)
+          (type_expression
             (type_ref
               (upper_case_qid
-                (upper_case_identifier))))))))
+                (upper_case_identifier))
+              (type_ref
+                (upper_case_qid
+                  (upper_case_identifier)))))))))
+
   (value_declaration
     (function_declaration_left
       (lower_case_identifier)
