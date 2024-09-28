@@ -3,14 +3,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "TreeSitterElm",
+    name: "TreeSitterGren",
     platforms: [.macOS(.v10_13), .iOS(.v11)],
     products: [
-        .library(name: "TreeSitterElm", targets: ["TreeSitterElm"]),
+        .library(name: "TreeSitterGren", targets: ["TreeSitterGren"]),
     ],
     dependencies: [],
     targets: [
-        .target(name: "TreeSitterElm",
+        .target(name: "TreeSitterGren",
                 path: ".",
                 exclude: [
                     "binding.gyp",

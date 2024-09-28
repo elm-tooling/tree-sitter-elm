@@ -1,14 +1,14 @@
 {
-  "name": "@elm-tooling/tree-sitter-elm",
+  "name": "MaeBrooks/tree-sitter-gren",
   "version": "5.7.0",
-  "description": "Tree sitter definitions for elm",
+  "description": "Tree sitter definitions for gren",
   "main": "bindings/node",
   "publishConfig": {
     "access": "public"
   },
   "keywords": [
-    "elm",
-    "elm-lang",
+    "gren",
+    "gren-lang",
     "tree-sitter",
     "parser",
     "lexer"
@@ -23,23 +23,24 @@
   },
   "scripts": {
     "build": "tree-sitter generate",
-    "parse-basic": "tree-sitter parse ./examples/basic.elm",
-    "parse-test": "tree-sitter parse --debug ./examples/test.elm",
+    "parse-basic": "tree-sitter parse ./examples/basic.gren",
+    "parse-test": "tree-sitter parse --debug ./examples/test.gren",
+    "test:dev": "npm run build && npm run test-only",
     "test": "tree-sitter test && script/parse-examples",
     "test-skip-download": "tree-sitter test && script/parse-examples -s",
     "test-full": "tree-sitter test && script/parse-examples-full",
     "test-full-skip-download": "tree-sitter test && script/parse-examples-full -s",
     "test-only": "tree-sitter test",
-    "test-highlighting": "tree-sitter highlight test/highlight/basic.elm",
-    "test-tags": "tree-sitter tags test/highlight/basic.elm",
-    "generate-wasm": "tree-sitter build-wasm && mv ./tree-sitter-elm.wasm ./docs/js/tree-sitter-elm.wasm"
+    "test-highlighting": "tree-sitter highlight test/highlight/basic.gren",
+    "test-tags": "tree-sitter tags test/highlight/basic.gren",
+    "generate-wasm": "tree-sitter build-wasm && mv ./tree-sitter-gren.wasm ./docs/js/tree-sitter-gren.wasm"
   },
-  "repository": "https://github.com/elm-tooling/tree-sitter-elm",
+  "repository": "https://github.com/MaeBrooks/tree-sitter-gren",
   "tree-sitter": [
     {
-      "scope": "source.elm",
+      "scope": "source.gren",
       "file-types": [
-        "elm"
+        "gren"
       ]
     }
   ]

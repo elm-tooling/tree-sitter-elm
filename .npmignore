@@ -3,7 +3,7 @@
 .gitattributes
 .editorconfig
 test
-elm-stuff
+gren-stuff
 examples
 examples-full
 build

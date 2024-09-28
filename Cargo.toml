@@ -1,14 +1,13 @@
 [package]
-name = "tree-sitter-elm"
-description = "elm grammar for the tree-sitter parsing library"
+name = "tree-sitter-gren"
+description = "gren grammar for the tree-sitter parsing library"
 authors = [
     "Harry Sarson <harry.sarson@hotmail.co.uk>",
     "Kolja Lampe <razzeee@gmail.com>"
-
 ]
 homepage = "https://tree-sitter.github.io/tree-sitter/"
-repository = "https://github.com/elm-tooling/tree-sitter-elm"
-keywords = ["elm", "tree", "sitter", "parsing", "incremental"]
+repository = "https://github.com/MaeBrooks/tree-sitter-gren"
+keywords = ["gren", "tree", "sitter", "parsing", "incremental"]
 categories = ["parser-implementations", "api-bindings", "text-editors", "parsing"]
 edition = "2018"
 license = "MIT"

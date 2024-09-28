@@ -36,10 +36,6 @@
             "named": true
           },
           {
-            "type": "glsl_code_expr",
-            "named": true
-          },
-          {
             "type": "if_else_expr",
             "named": true
           },
@@ -189,10 +185,6 @@
             "named": true
           },
           {
-            "type": "glsl_code_expr",
-            "named": true
-          },
-          {
             "type": "if_else_expr",
             "named": true
           },
@@ -287,10 +279,6 @@
           },
           {
             "type": "function_call_expr",
-            "named": true
-          },
-          {
-            "type": "glsl_code_expr",
             "named": true
           },
           {
@@ -409,10 +397,6 @@
           },
           {
             "type": "function_call_expr",
-            "named": true
-          },
-          {
-            "type": "glsl_code_expr",
             "named": true
           },
           {
@@ -720,10 +704,6 @@
             "named": true
           },
           {
-            "type": "glsl_code_expr",
-            "named": true
-          },
-          {
             "type": "if_else_expr",
             "named": true
           },
@@ -971,10 +951,6 @@
             "named": true
           },
           {
-            "type": "glsl_code_expr",
-            "named": true
-          },
-          {
             "type": "if_else_expr",
             "named": true
           },
@@ -1123,22 +1099,6 @@
     }
   },
   {
-    "type": "glsl_code_expr",
-    "named": true,
-    "fields": {
-      "content": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "glsl_content",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "if_else_expr",
     "named": true,
     "fields": {
@@ -1172,10 +1132,6 @@
           },
           {
             "type": "function_call_expr",
-            "named": true
-          },
-          {
-            "type": "glsl_code_expr",
             "named": true
           },
           {
@@ -1367,10 +1323,6 @@
             "named": true
           },
           {
-            "type": "glsl_code_expr",
-            "named": true
-          },
-          {
             "type": "if_else_expr",
             "named": true
           },
@@ -1476,10 +1428,6 @@
           },
           {
             "type": "function_call_expr",
-            "named": true
-          },
-          {
-            "type": "glsl_code_expr",
             "named": true
           },
           {
@@ -1661,10 +1609,6 @@
           "named": true
         },
         {
-          "type": "glsl_code_expr",
-          "named": true
-        },
-        {
           "type": "if_else_expr",
           "named": true
         },
@@ -1819,10 +1763,6 @@
           },
           {
             "type": "function_call_expr",
-            "named": true
-          },
-          {
-            "type": "glsl_code_expr",
             "named": true
           },
           {
@@ -2145,10 +2085,6 @@
           },
           {
             "type": "function_call_expr",
-            "named": true
-          },
-          {
-            "type": "glsl_code_expr",
             "named": true
           },
           {
@@ -2675,10 +2611,6 @@
             "named": true
           },
           {
-            "type": "glsl_code_expr",
-            "named": true
-          },
-          {
             "type": "if_else_expr",
             "named": true
           },
@@ -2961,10 +2893,6 @@
   },
   {
     "type": "exposing",
-    "named": true
-  },
-  {
-    "type": "glsl_content",
     "named": true
   },
   {

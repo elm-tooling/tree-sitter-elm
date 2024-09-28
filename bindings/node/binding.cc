@@ -1,10 +1,10 @@
+#include "nan.h"
 #include "tree_sitter/parser.h"
 #include <node.h>
-#include "nan.h"
 
 using namespace v8;
 
-extern "C" TSLanguage * tree_sitter_elm();
+extern "C" TSLanguage *tree_sitter_gren();
 
 namespace {
 
@@ -16,13 +16,15 @@ void Init(Local<Object> exports, Local<Object> module) {
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
   Local<Function> constructor = Nan::GetFunction(tpl).ToLocalChecked();
-  Local<Object> instance = constructor->NewInstance(Nan::GetCurrentContext()).ToLocalChecked();
-  Nan::SetInternalFieldPointer(instance, 0, tree_sitter_elm());
+  Local<Object> instance =
+      constructor->NewInstance(Nan::GetCurrentContext()).ToLocalChecked();
+  Nan::SetInternalFieldPointer(instance, 0, tree_sitter_gren());
 
-  Nan::Set(instance, Nan::New("name").ToLocalChecked(), Nan::New("elm").ToLocalChecked());
+  Nan::Set(instance, Nan::New("name").ToLocalChecked(),
+           Nan::New("gren").ToLocalChecked());
   Nan::Set(module, Nan::New("exports").ToLocalChecked(), instance);
 }
 
-NODE_MODULE(tree_sitter_elm_binding, Init)
+NODE_MODULE(tree_sitter_gren_binding, Init)
 
-}  // namespace
+} // namespace

@@ -3,7 +3,7 @@ Complete function example
 ================================================================================
 
 {-| An animation frame triggers about 60 times per second. Get the POSIX time
-on each frame. (See [`elm/time`](/packages/elm/time/latest) for more info on
+on each frame. (See [`gren/time`](/packages/gren/time/latest) for more info on
 POSIX times.)
 
 **Note:** Browsers have their own render loop, repainting things as fast as

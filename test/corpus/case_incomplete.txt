@@ -238,7 +238,7 @@ update msg =
             "Error!"
 
     -- This comment is parsed as a top-level comment.
-    -- elm-format too will format it to a toplevel comment.
+    -- gren-format too will format it to a toplevel comment.
 --------------------------------------------------------------------------------
 
 (file
@@ -295,7 +295,7 @@ update msg =
             "Error!"
 
         -- This comment is parsed as a top-level comment.
-        -- elm-format too will format it to a toplevel comment.
+        -- gren-format too will format it to a toplevel comment.
 --------------------------------------------------------------------------------
 
 (file
@@ -352,7 +352,7 @@ update msg =
             "Error!"
 
             -- This comment is parsed as a top-level comment.
-            -- elm-format too will format it to a toplevel comment.
+            -- gren-format too will format it to a toplevel comment.
 --------------------------------------------------------------------------------
 
 (file

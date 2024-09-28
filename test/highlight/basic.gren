@@ -1,0 +1,50 @@
+module Main exposing (Msg(..), main, update, view)
+-- ^ keyword.other.gren
+--              ^ keyword.other.gren
+
+import Browser
+-- ^ meta.import.gren
+import Html exposing (Html, button, div, text)
+-- ^ meta.import.gren
+import Html.Events exposing (onClick)
+-- ^ meta.import.gren
+
+
+main =
+    Browser.sandbox { init = 0, update = update, view = view }
+
+
+type Msg
+-- <- @keyword.type.gren
+--    ^ @storage.type.gren
+    = Increment
+    -- ^ union.gren
+    | Decrement
+    -- ^ union.gren
+
+update : Msg -> Model
+-- <- function.gren
+--     ^ keyword.other.gren
+--            ^ keyword.operator.arrow.gren
+
+update msg model =
+    case msg of
+    --       ^ keyword.control.gren
+        Increment ->
+                -- ^ keyword.operator.arrow.gren
+            model + 1
+            --    ^ keyword.operator.gren
+
+        Decrement ->
+            model - 1
+            --      ^ constant.numeric.gren
+
+view model =
+    --     ^ keyword.operator.assignment.gren
+    div []
+        [ button [ onClick Decrement ] [ text "-" ]
+        --                                    ^ string.gren
+        --                                      ^ string.gren
+        , div [] [ text (String.fromInt model) ]
+        , button [ onClick Increment ] [ text "+" ]
+        ]

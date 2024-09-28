@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "tree_sitter_elm_binding",
+      "target_name": "tree_sitter_gren_binding",
       "include_dirs": [
         "<!(node -e \"require('nan')\")",
         "src"

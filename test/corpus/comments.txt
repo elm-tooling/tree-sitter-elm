@@ -54,7 +54,7 @@ Complex Block comment
 
 {-| Works just like [`Parser.Nestable`](Parser#nestable) to help distinguish
 between unnestable `/*` `*/` comments like in JS and nestable `{-` `-}`
-comments like in Elm.
+comments like in Gren.
 -}
 
 --------------------------------------------------------------------------------
