@@ -643,10 +643,6 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "tuple_pattern"
-                  },
-                  {
-                    "type": "SYMBOL",
                     "name": "unit_expr"
                   },
                   {
@@ -908,14 +904,6 @@
           }
         },
         {
-          "type": "FIELD",
-          "name": "part",
-          "content": {
-            "type": "SYMBOL",
-            "name": "tuple_type"
-          }
-        },
-        {
           "type": "SEQ",
           "members": [
             {
@@ -1039,60 +1027,6 @@
             "type": "SYMBOL",
             "name": "type_expression"
           }
-        }
-      ]
-    },
-    "tuple_type": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "FIELD",
-          "name": "unitExpr",
-          "content": {
-            "type": "SYMBOL",
-            "name": "unit_expr"
-          }
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "("
-            },
-            {
-              "type": "FIELD",
-              "name": "typeExpression",
-              "content": {
-                "type": "SYMBOL",
-                "name": "type_expression"
-              }
-            },
-            {
-              "type": "REPEAT1",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": ","
-                  },
-                  {
-                    "type": "FIELD",
-                    "name": "typeExpression",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "type_expression"
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "STRING",
-              "value": ")"
-            }
-          ]
         }
       ]
     },
@@ -1329,10 +1263,6 @@
         {
           "type": "SYMBOL",
           "name": "unit_expr"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "tuple_expr"
         },
         {
           "type": "SYMBOL",
@@ -1731,47 +1661,6 @@
           }
         ]
       }
-    },
-    "tuple_expr": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "("
-        },
-        {
-          "type": "FIELD",
-          "name": "expr",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_expression"
-          }
-        },
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": ","
-              },
-              {
-                "type": "FIELD",
-                "name": "expr",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "STRING",
-          "value": ")"
-        }
-      ]
     },
     "unit_expr": {
       "type": "SEQ",
@@ -2402,10 +2291,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "tuple_pattern"
-        },
-        {
-          "type": "SYMBOL",
           "name": "unit_expr"
         },
         {
@@ -2468,14 +2353,6 @@
           "content": {
             "type": "SYMBOL",
             "name": "union_pattern"
-          }
-        },
-        {
-          "type": "FIELD",
-          "name": "child",
-          "content": {
-            "type": "SYMBOL",
-            "name": "tuple_pattern"
           }
         },
         {
@@ -2665,10 +2542,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "tuple_pattern"
-        },
-        {
-          "type": "SYMBOL",
           "name": "nullary_constructor_argument_pattern"
         },
         {
@@ -2690,64 +2563,6 @@
         {
           "type": "SYMBOL",
           "name": "_parenthesized_pattern"
-        }
-      ]
-    },
-    "tuple_pattern": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "("
-        },
-        {
-          "type": "FIELD",
-          "name": "pattern",
-          "content": {
-            "type": "SYMBOL",
-            "name": "pattern"
-          }
-        },
-        {
-          "type": "STRING",
-          "value": ","
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "pattern",
-              "content": {
-                "type": "SYMBOL",
-                "name": "pattern"
-              }
-            },
-            {
-              "type": "REPEAT",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": ","
-                  },
-                  {
-                    "type": "FIELD",
-                    "name": "pattern",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "pattern"
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": ")"
         }
       ]
     },

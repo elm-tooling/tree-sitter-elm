@@ -592,59 +592,6 @@ eNumberWithDot =
       (number_literal))))
 
 ================================================================================
-Tuples
-================================================================================
-
-tuple1 =
-        ()
-tuple2 =
-        (0, 15)
-tuple3 =
-        (0,15)
-tuple4 =
-        ("string",  "string")
-
---------------------------------------------------------------------------------
-
-(file
-  (value_declaration
-    (function_declaration_left
-      (lower_case_identifier))
-    (eq)
-    (unit_expr))
-  (value_declaration
-    (function_declaration_left
-      (lower_case_identifier))
-    (eq)
-    (tuple_expr
-      (number_constant_expr
-        (number_literal))
-      (number_constant_expr
-        (number_literal))))
-  (value_declaration
-    (function_declaration_left
-      (lower_case_identifier))
-    (eq)
-    (tuple_expr
-      (number_constant_expr
-        (number_literal))
-      (number_constant_expr
-        (number_literal))))
-  (value_declaration
-    (function_declaration_left
-      (lower_case_identifier))
-    (eq)
-    (tuple_expr
-      (string_constant_expr
-        (open_quote)
-        (regular_string_part)
-        (close_quote))
-      (string_constant_expr
-        (open_quote)
-        (regular_string_part)
-        (close_quote)))))
-
-================================================================================
 Infix operators
 ================================================================================
 

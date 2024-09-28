@@ -208,7 +208,6 @@ module.exports = grammar({
               choice(
                 $.anything_pattern,
                 $.lower_pattern,
-                $.tuple_pattern,
                 $.unit_expr,
                 $.list_pattern,
                 $.record_pattern,
@@ -269,7 +268,6 @@ module.exports = grammar({
         field("part", alias($.type_ref_without_args, $.type_ref)),
         field("part", $.type_variable),
         field("part", $.record_type),
-        field("part", $.tuple_type),
         seq("(", field("part", $.type_expression), ")")
       ),
 
@@ -294,17 +292,6 @@ module.exports = grammar({
         field("name", $.lower_case_identifier),
         $.colon,
         field("typeExpression", $.type_expression)
-      ),
-
-    tuple_type: ($) =>
-      choice(
-        field("unitExpr", $.unit_expr),
-        seq(
-          "(",
-          field("typeExpression", $.type_expression),
-          repeat1(seq(",", field("typeExpression", $.type_expression))),
-          ")"
-        )
       ),
 
     type_annotation: ($) =>
@@ -375,7 +362,6 @@ module.exports = grammar({
         $.operator_as_function_expr,
         $.parenthesized_expr,
         $.unit_expr,
-        $.tuple_expr,
         $.list_expr,
         $.record_expr,
         $.if_else_expr,
@@ -488,14 +474,6 @@ module.exports = grammar({
 
     value_expr: ($) => field("name", choice($.value_qid, $.upper_case_qid)),
 
-    tuple_expr: ($) =>
-      seq(
-        "(",
-        field("expr", $._expression),
-        repeat1(seq(",", field("expr", $._expression))),
-        ")"
-      ),
-
     unit_expr: ($) => seq("(", ")"),
 
     list_expr: ($) =>
@@ -597,7 +575,6 @@ module.exports = grammar({
         $.anything_pattern,
         $.lower_pattern,
         $.union_pattern,
-        $.tuple_pattern,
         $.unit_expr,
         $.list_pattern,
         $.record_pattern,
@@ -610,7 +587,6 @@ module.exports = grammar({
         field("child", $.anything_pattern),
         field("child", $.lower_pattern),
         field("child", $.union_pattern),
-        field("child", $.tuple_pattern),
         field("child", $.unit_expr),
         field("child", $.list_pattern),
         field("child", $.record_pattern),
@@ -641,22 +617,12 @@ module.exports = grammar({
       choice(
         $.anything_pattern,
         $.lower_pattern,
-        $.tuple_pattern,
         $.nullary_constructor_argument_pattern,
         $.unit_expr,
         $.list_pattern,
         $.record_pattern,
         $._literal_expr_group,
         $._parenthesized_pattern
-      ),
-
-    tuple_pattern: ($) =>
-      seq(
-        "(",
-        field("pattern", $.pattern),
-        ",",
-        commaSep1(field("pattern", $.pattern), ","),
-        ")"
       ),
 
     _parenthesized_pattern: ($) => seq("(", $.pattern, ")"),
