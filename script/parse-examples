@@ -29,7 +29,8 @@ while getopts ${optstring} arg; do
 done
 
 if [[ $SKIP_DOWNLOAD != 'true' ]]; then
-#  checkout_at "examples/<name>" "<git name>/<git project>" "<commit id>"
+    #  checkout_at "examples/<name>" "<git name>/<git project>" "<commit id>"
+    echo "TODO: Download examples"
 fi
 
 skipped_files=()
