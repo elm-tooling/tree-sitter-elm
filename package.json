@@ -1,6 +1,6 @@
 {
   "name": "MaeBrooks/tree-sitter-gren",
-  "version": "5.7.0",
+  "version": "0.1.0",
   "description": "Tree sitter definitions for gren",
   "main": "bindings/node",
   "publishConfig": {
@@ -13,7 +13,7 @@
     "parser",
     "lexer"
   ],
-  "author": "Razze",
+  "author": "Mae Brooks",
   "license": "MIT",
   "dependencies": {
     "nan": "^2.18.0"
