@@ -1,0 +1,16 @@
+[[language]]
+name = "gren"
+scope = "source.gren"
+injection-regex = "gren"
+file-types = ["gren"]
+roots = ["gren.json"]
+comment-tokens = "--"
+block-comment-tokens = { start = "{-", end = "-}" }
+indent = { tab-width = 4, unit = "    " }
+grammar = "gren"
+auto-format = false
+language-servers = []
+
+[[grammar]]
+name = "gren"
+source = { git = "https://github.com/MaeBrooks/tree-sitter-gren", rev = "ffc35462d35898ca918e19dda9cb19734a5f251a" }
