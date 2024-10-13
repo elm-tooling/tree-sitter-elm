@@ -4,6 +4,10 @@
 
 An exploration at adding tree-sitter support for the [Gren programming language](https://gren-lang.org/)
 
+## Editor Support
+
+[Here](editors/README.md)
+
 ## Thanks
 
 Shamelessly stolen from the [tree-sitter-elm](https://github.com/elm-tooling/tree-sitter-elm) project.
