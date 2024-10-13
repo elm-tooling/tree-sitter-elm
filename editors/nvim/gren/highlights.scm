@@ -62,10 +62,10 @@
                                             (upper_case_identifier) @type))
 (union_pattern constructor: (upper_case_qid (upper_case_identifier) @type))
 
-(union_variant(upper_case_identifier) @variable.other.member)
+(union_variant(upper_case_identifier) @type.other.member)
 (value_expr name: (value_qid (upper_case_identifier) @label))
-(value_expr (upper_case_qid (upper_case_identifier) @label (dot) (upper_case_identifier) @variable.other.member))
-(value_expr(upper_case_qid(upper_case_identifier)) @variable.other.member)
+(value_expr (upper_case_qid (upper_case_identifier) @label (dot) (upper_case_identifier) @type.other.member))
+(value_expr(upper_case_qid(upper_case_identifier)) @type.other.member)
 
 ; comments
 (line_comment) @comment
