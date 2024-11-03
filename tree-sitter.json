@@ -1,0 +1,38 @@
+{
+    "grammars": [
+        {
+            "name": "elm",
+            "camelcase": "Elm",
+            "scope": "source.elm",
+            "path": ".",
+            "file-types": [
+                "elm"
+            ],
+            "highlights": "queries/highlights.scm",
+            "tags": "queries/tags.scm",
+            "injection-regex": "queries/injections.scm"
+        }
+    ],
+    "metadata": {
+        "version": "5.7.0",
+        "license": "MIT",
+        "description": "Tree sitter definitions for elm",
+        "authors": [
+            {
+                "name": "Kolja Lampe",
+                "email": "razzeee@gmail.com"
+            }
+        ],
+        "links": {
+            "repository": "https://github.com/elm-tooling/tree-sitter-elm"
+        }
+    },
+    "bindings": {
+        "c": true,
+        "go": true,
+        "node": true,
+        "python": true,
+        "rust": true,
+        "swift": true
+    }
+}
