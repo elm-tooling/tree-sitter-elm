@@ -34,13 +34,5 @@
     "test-tags": "tree-sitter tags test/highlight/basic.elm",
     "generate-wasm": "tree-sitter build-wasm && mv ./tree-sitter-elm.wasm ./docs/js/tree-sitter-elm.wasm"
   },
-  "repository": "https://github.com/elm-tooling/tree-sitter-elm",
-  "tree-sitter": [
-    {
-      "scope": "source.elm",
-      "file-types": [
-        "elm"
-      ]
-    }
-  ]
+  "repository": "https://github.com/elm-tooling/tree-sitter-elm"
 }

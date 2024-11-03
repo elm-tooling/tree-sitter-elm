@@ -6,19 +6,22 @@ authors = [
     "Kolja Lampe <razzeee@gmail.com>"
 
 ]
+readme = "README.md"
 homepage = "https://tree-sitter.github.io/tree-sitter/"
 repository = "https://github.com/elm-tooling/tree-sitter-elm"
-keywords = ["elm", "tree", "sitter", "parsing", "incremental"]
-categories = ["parser-implementations", "api-bindings", "text-editors", "parsing"]
-edition = "2018"
+keywords = ["incremental", "parsing", "tree-sitter", "elm"]
+categories = ["parsing", "text-editors"]
+edition = "2021"
 license = "MIT"
+autoexamples = false
+
 build = "bindings/rust/build.rs"
 include = [
-  "bindings/rust/*",
-  "grammar.js",
-  "queries/*",
-  "src/*",
-  "LICENSE.md",
+    "bindings/rust/*",
+    "grammar.js",
+    "queries/*",
+    "src/*",
+    "LICENSE.md",
 ]
 
 # Keep in sync with package.json
@@ -28,7 +31,10 @@ version = "5.7.0"
 path = "bindings/rust/lib.rs"
 
 [dependencies]
-tree-sitter = "0.25.3"
+tree-sitter-language = "0.1"
 
 [build-dependencies]
-cc = "1.0"
+cc = "1.1.22"
+
+[dev-dependencies]
+tree-sitter = "0.25.3"
