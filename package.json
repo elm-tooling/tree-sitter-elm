@@ -16,10 +16,10 @@
   "author": "Razze",
   "license": "MIT",
   "dependencies": {
-    "nan": "^2.18.0"
+    "nan": "^2.22.0"
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.20.8"
+    "tree-sitter-cli": "^0.24.3"
   },
   "scripts": {
     "build": "tree-sitter generate",
