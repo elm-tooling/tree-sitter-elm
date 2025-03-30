@@ -4,18 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tree-sitter-elm"
-description = "Tree sitter definitions for elm"
+description = "Elm grammar for tree-sitter"
 version = "5.7.0"
 keywords = ["incremental", "parsing", "tree-sitter", "elm"]
 classifiers = [
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Topic :: Software Development :: Compilers",
   "Topic :: Text Processing :: Linguistic",
   "Typing :: Typed",
 ]
 authors = [{ name = "Kolja Lampe", email = "razzeee@gmail.com" }]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license.text = "MIT"
 readme = "README.md"
 
@@ -23,8 +22,8 @@ readme = "README.md"
 Homepage = "https://github.com/elm-tooling/tree-sitter-elm"
 
 [project.optional-dependencies]
-core = ["tree-sitter~=0.22"]
+core = ["tree-sitter~=0.24"]
 
 [tool.cibuildwheel]
-build = "cp39-*"
+build = "cp310-*"
 build-frontend = "build"
