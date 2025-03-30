@@ -25,8 +25,7 @@ view model =
         (value_expr
           (upper_case_qid
             (upper_case_identifier)))
-        (ERROR
-          (dot))))))
+        (ERROR)))))
 
 ================================================================================
 Incomplete model access
@@ -100,11 +99,13 @@ defaultPage = Home
 --------------------------------------------------------------------------------
 
 (file
-  (ERROR
+  (import_clause
     (import)
     (upper_case_qid
       (upper_case_identifier))
-    (as))
+    (as_clause
+      (as)
+      (ERROR)))
   (import_clause
     (import)
     (upper_case_qid
