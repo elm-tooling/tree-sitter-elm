@@ -1,7 +1,7 @@
 [package]
 name = "tree-sitter-elm"
 description = "Elm grammar for tree-sitter"
-version = "5.7.0"
+version = "5.8.0"
 authors = [
     "Harry Sarson <harry.sarson@hotmail.co.uk>",
     "Kolja Lampe <razzeee@gmail.com>"

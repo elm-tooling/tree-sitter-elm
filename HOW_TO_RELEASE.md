@@ -1,4 +1,4 @@
-1. Increase the version number in the package.json and the Cargo.toml
+1. Increase the version number in all places
 2. Run `npm run generate-wasm`
 3. Push the code to main
 4. Wait for tests to be successful
