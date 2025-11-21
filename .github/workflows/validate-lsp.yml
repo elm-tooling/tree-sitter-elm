@@ -19,10 +19,10 @@ jobs:
         node-version: [20, 22, 24]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           path: "tree-sitter-elm"
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         name: Checkout main branch of elm-language-server
         with:
           repository: "elm-tooling/elm-language-server"
