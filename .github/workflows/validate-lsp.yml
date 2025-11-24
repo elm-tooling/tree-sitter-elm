@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        node-version: [20, 22]
+        node-version: [20, 22, 24]
 
     steps:
       - uses: actions/checkout@v6
@@ -32,7 +32,7 @@ jobs:
           cd tree-sitter-elm/
           npm i
           npm run build
-          npx tree-sitter build-wasm
+          npx tree-sitter build --wasm
           mv ./tree-sitter-elm.wasm ../elm-language-server/tree-sitter-elm.wasm -f
 
       - name: Install elm-language-server dependencies, compile, and run tests
