@@ -4,7 +4,7 @@ endif
 
 LANGUAGE_NAME := tree-sitter-elm
 HOMEPAGE_URL := https://github.com/elm-tooling/tree-sitter-elm
-VERSION := 5.8.0
+VERSION := 5.9.0
 
 # repository
 SRC_DIR := src

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(tree-sitter-elm
-        VERSION "5.8.0"
+        VERSION "5.9.0"
         DESCRIPTION "Elm grammar for tree-sitter"
         HOMEPAGE_URL "https://github.com/elm-tooling/tree-sitter-elm"
         LANGUAGES C)
