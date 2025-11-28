@@ -293,6 +293,7 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
         while (scanner->indent_length <= VEC_BACK(scanner->indents)) {
             if (scanner->indent_length == VEC_BACK(scanner->indents)) {
                 if (found_in) {
+                    VEC_POP(scanner->indents);  // Pop the section we're closing
                     VEC_PUSH(scanner->runback, 1);
                     found_in = false;
                     break;
