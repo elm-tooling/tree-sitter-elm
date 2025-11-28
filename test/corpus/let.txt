@@ -1047,3 +1047,75 @@ oops =
       (value_expr
         (value_qid
           (lower_case_identifier))))))
+
+================================================================================
+Let with misaligned 'in' keyword (no code after)
+================================================================================
+
+inx =
+  let
+    x = 12
+    in x
+
+
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (function_declaration_left
+      (lower_case_identifier))
+    (eq)
+    (let_in_expr
+      (value_declaration
+        (function_declaration_left
+          (lower_case_identifier))
+        (eq)
+        (number_constant_expr
+          (number_literal)))
+      (value_expr
+        (value_qid
+          (lower_case_identifier))))))
+
+
+================================================================================
+Let with misaligned 'in' keyword
+================================================================================
+
+inx =
+  let
+    x = 12
+    in x
+
+type Dict key value =
+  Internal Int
+
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (function_declaration_left
+      (lower_case_identifier))
+    (eq)
+    (let_in_expr
+      (value_declaration
+        (function_declaration_left
+          (lower_case_identifier))
+        (eq)
+        (number_constant_expr
+          (number_literal)))
+      (value_expr
+        (value_qid
+          (lower_case_identifier)))))
+  (type_declaration
+    (type)
+    (upper_case_identifier)
+    (lower_type_name
+      (lower_case_identifier))
+    (lower_type_name
+      (lower_case_identifier))
+    (eq)
+    (union_variant
+      (upper_case_identifier)
+      (type_ref
+        (upper_case_qid
+          (upper_case_identifier))))))
