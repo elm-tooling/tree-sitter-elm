@@ -106,6 +106,15 @@ static int checkForIn(TSLexer *lexer, const bool *valid_symbols) {
     return 0;
 }
 
+// Check if we're at a closing paren, comma, or brace that should end a case section
+static bool checkForSectionEndingToken(TSLexer *lexer, const bool *valid_symbols) {
+    if (valid_symbols[VIRTUAL_END_SECTION] && 
+        (lexer->lookahead == ')' || lexer->lookahead == ',' || lexer->lookahead == '}')) {
+        return true;
+    }
+    return false;
+}
+
 static bool scan_block_comment(TSLexer *lexer) {
     lexer->mark_end(lexer);
     if (lexer->lookahead != '{') {
@@ -193,9 +202,14 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
             int32_t lookahead = lexer->lookahead;
 
             // Handle minus without a whitespace for negate
+            // Must check for Unicode characters (> 127) that could start an identifier
+            // Checking for > 127 is enough here, since a later check for `$._atom` will
+            // validate the full identifier
             if (valid_symbols[MINUS_WITHOUT_TRAILING_WHITESPACE] &&
                 ((lookahead >= 'a' && lookahead <= 'z') ||
-                 (lookahead >= 'A' && lookahead <= 'Z') || lookahead == '(')) {
+                 (lookahead >= 'A' && lookahead <= 'Z') || 
+                 lookahead == '(' ||
+                 lookahead > 127)) {
                 if (can_call_mark_end) {
                     lexer->result_symbol = MINUS_WITHOUT_TRAILING_WHITESPACE;
                     lexer->mark_end(lexer);
@@ -249,6 +263,15 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
         }
     }
 
+    // Check if we're at a closing paren, comma, or brace - if so, emit VIRTUAL_END_SECTION
+    // to close any open case/let sections before the token is consumed.
+    // This handles cases like: (\p -> case x of ... ) or { a = case x of ... , b = ... }
+    if (checkForSectionEndingToken(lexer, valid_symbols)) {
+        lexer->result_symbol = VIRTUAL_END_SECTION;
+        VEC_POP(scanner->indents);
+        return true;
+    }
+
     // Open section if the grammar lets us but only push to indent stack if
     // we go further down in the stack
     if (valid_symbols[VIRTUAL_OPEN_SECTION] && !lexer->eof(lexer)) {
@@ -290,6 +313,93 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
         // multiple tokens to get back up to the right level
         VEC_CLEAR(scanner->runback);
 
+        // Before making indentation decisions, check if we're at a block comment.
+        // If so, the block comment's column doesn't represent the real indentation
+        // of the code - we need to look past it to find the actual content.
+        if (lexer->lookahead == '{' && !valid_symbols[BLOCK_COMMENT_CONTENT] &&
+            scanner->indent_length < VEC_BACK(scanner->indents)) {
+            // We're at '{' and would close sections based on indentation.
+            // Check if this is a block comment.
+            advance(lexer);
+            if (lexer->lookahead == '-') {
+                // It's a block comment - skip it and remeasure indentation
+                can_call_mark_end = false;
+                advance(lexer);
+                int nesting = 1;
+                while (nesting > 0 && !lexer->eof(lexer)) {
+                    if (lexer->lookahead == '{') {
+                        advance(lexer);
+                        if (lexer->lookahead == '-') {
+                            advance(lexer);
+                            nesting++;
+                        }
+                    } else if (lexer->lookahead == '-') {
+                        advance(lexer);
+                        if (lexer->lookahead == '}') {
+                            advance(lexer);
+                            nesting--;
+                        }
+                    } else {
+                        advance(lexer);
+                    }
+                }
+                // Skip whitespace/newlines after comment and remeasure indent
+                while (lexer->lookahead == ' ' || lexer->lookahead == '\n' || 
+                       lexer->lookahead == '\r' || lexer->lookahead == '\t') {
+                    if (lexer->lookahead == '\n') {
+                        advance(lexer);
+                        while (lexer->lookahead == ' ') {
+                            advance(lexer);
+                        }
+                        scanner->indent_length = lexer->get_column(lexer);
+                    } else {
+                        advance(lexer);
+                    }
+                }
+                // Check for additional block comments
+                while (lexer->lookahead == '{') {
+                    advance(lexer);
+                    if (lexer->lookahead == '-') {
+                        advance(lexer);
+                        nesting = 1;
+                        while (nesting > 0 && !lexer->eof(lexer)) {
+                            if (lexer->lookahead == '{') {
+                                advance(lexer);
+                                if (lexer->lookahead == '-') {
+                                    advance(lexer);
+                                    nesting++;
+                                }
+                            } else if (lexer->lookahead == '-') {
+                                advance(lexer);
+                                if (lexer->lookahead == '}') {
+                                    advance(lexer);
+                                    nesting--;
+                                }
+                            } else {
+                                advance(lexer);
+                            }
+                        }
+                        while (lexer->lookahead == ' ' || lexer->lookahead == '\n' || 
+                               lexer->lookahead == '\r' || lexer->lookahead == '\t') {
+                            if (lexer->lookahead == '\n') {
+                                advance(lexer);
+                                while (lexer->lookahead == ' ') {
+                                    advance(lexer);
+                                }
+                                scanner->indent_length = lexer->get_column(lexer);
+                            } else {
+                                advance(lexer);
+                            }
+                        }
+                    } else {
+                        // Not a block comment, the current indent_length stands
+                        break;
+                    }
+                }
+            }
+            // If not a block comment, indent_length is already correct
+        }
+
         while (scanner->indent_length <= VEC_BACK(scanner->indents)) {
             if (scanner->indent_length == VEC_BACK(scanner->indents)) {
                 if (found_in) {
@@ -321,13 +431,21 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
             if (scanner->indent_length < VEC_BACK(scanner->indents)) {
                 VEC_POP(scanner->indents);
                 VEC_PUSH(scanner->runback, 1);
-                found_in = false;
+                // If we've popped past the indent_length and found_in is true,
+                // this pop closed the let section. Reset found_in since the let
+                // is now closed. Otherwise keep found_in true to close the let
+                // when we reach its exact indentation level.
+                if (found_in && (scanner->indents.len == 0 || 
+                    scanner->indent_length > VEC_BACK(scanner->indents))) {
+                    found_in = false;
+                }
             }
         }
 
         // Needed for some of the more weird cases where let is in the same
         // line as everything before the in in the next line
         if (found_in) {
+            VEC_POP(scanner->indents);
             VEC_PUSH(scanner->runback, 1);
             found_in = false;
         }
