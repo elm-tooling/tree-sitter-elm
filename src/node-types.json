@@ -1092,6 +1092,10 @@
             "named": true
           },
           {
+            "type": "nullary_constructor_argument_pattern",
+            "named": true
+          },
+          {
             "type": "number_constant_expr",
             "named": true
           },

@@ -1168,80 +1168,81 @@ flipBy how (Plane (width, height) _ as plane) =
         (value_expr
           (value_qid
             (lower_case_identifier)))
-        (case_of_expr
-          (case)
-          (value_expr
-            (value_qid
-              (lower_case_identifier)))
-          (of)
-          (case_of_branch
-            (pattern
-              (union_pattern
-                (upper_case_qid
-                  (upper_case_identifier))))
-            (arrow)
-            (anonymous_function_expr
-              (backslash)
+        (parenthesized_expr
+          (case_of_expr
+            (case)
+            (value_expr
+              (value_qid
+                (lower_case_identifier)))
+            (of)
+            (case_of_branch
               (pattern
-                (tuple_pattern
-                  (pattern
-                    (lower_pattern
-                      (lower_case_identifier)))
-                  (pattern
-                    (lower_pattern
-                      (lower_case_identifier)))))
+                (union_pattern
+                  (upper_case_qid
+                    (upper_case_identifier))))
               (arrow)
-              (tuple_expr
-                (bin_op_expr
+              (anonymous_function_expr
+                (backslash)
+                (pattern
+                  (tuple_pattern
+                    (pattern
+                      (lower_pattern
+                        (lower_case_identifier)))
+                    (pattern
+                      (lower_pattern
+                        (lower_case_identifier)))))
+                (arrow)
+                (tuple_expr
+                  (bin_op_expr
+                    (value_expr
+                      (value_qid
+                        (lower_case_identifier)))
+                    (operator
+                      (operator_identifier))
+                    (number_constant_expr
+                      (number_literal))
+                    (operator
+                      (operator_identifier))
+                    (value_expr
+                      (value_qid
+                        (lower_case_identifier))))
                   (value_expr
                     (value_qid
-                      (lower_case_identifier)))
-                  (operator
-                    (operator_identifier))
-                  (number_constant_expr
-                    (number_literal))
-                  (operator
-                    (operator_identifier))
-                  (value_expr
-                    (value_qid
-                      (lower_case_identifier))))
-                (value_expr
-                  (value_qid
-                    (lower_case_identifier))))))
-          (case_of_branch
-            (pattern
-              (union_pattern
-                (upper_case_qid
-                  (upper_case_identifier))))
-            (arrow)
-            (anonymous_function_expr
-              (backslash)
+                      (lower_case_identifier))))))
+            (case_of_branch
               (pattern
-                (tuple_pattern
-                  (pattern
-                    (lower_pattern
-                      (lower_case_identifier)))
-                  (pattern
-                    (lower_pattern
-                      (lower_case_identifier)))))
+                (union_pattern
+                  (upper_case_qid
+                    (upper_case_identifier))))
               (arrow)
-              (tuple_expr
-                (value_expr
-                  (value_qid
-                    (lower_case_identifier)))
-                (bin_op_expr
+              (anonymous_function_expr
+                (backslash)
+                (pattern
+                  (tuple_pattern
+                    (pattern
+                      (lower_pattern
+                        (lower_case_identifier)))
+                    (pattern
+                      (lower_pattern
+                        (lower_case_identifier)))))
+                (arrow)
+                (tuple_expr
                   (value_expr
                     (value_qid
                       (lower_case_identifier)))
-                  (operator
-                    (operator_identifier))
-                  (number_constant_expr
-                    (number_literal))
-                  (operator
-                    (operator_identifier))
-                  (value_expr
-                    (value_qid
-                      (lower_case_identifier))))))))))))
+                  (bin_op_expr
+                    (value_expr
+                      (value_qid
+                        (lower_case_identifier)))
+                    (operator
+                      (operator_identifier))
+                    (number_constant_expr
+                      (number_literal))
+                    (operator
+                      (operator_identifier))
+                    (value_expr
+                      (value_qid
+                        (lower_case_identifier)))))))))))))
 
 ================================================================================
 Case with of followed by comment

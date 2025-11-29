@@ -94,7 +94,7 @@
               "type": "REPEAT",
               "content": {
                 "type": "PATTERN",
-                "value": "[^\\n]"
+                "value": "[^\\n\\r]"
               }
             }
           ]
@@ -645,6 +645,10 @@
                   {
                     "type": "SYMBOL",
                     "name": "tuple_pattern"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "nullary_constructor_argument_pattern"
                   },
                   {
                     "type": "SYMBOL",
@@ -1523,7 +1527,7 @@
                 "type": "TOKEN",
                 "content": {
                   "type": "PATTERN",
-                  "value": "[^\\\\\\n']"
+                  "value": "[^\\\\\\n\\r']"
                 }
               },
               "named": true,
@@ -1656,7 +1660,7 @@
                           "type": "REPEAT1",
                           "content": {
                             "type": "PATTERN",
-                            "value": "[^\\\\\"\\n]"
+                            "value": "[^\\\\\"\\n\\r]"
                           }
                         }
                       }
@@ -2876,7 +2880,7 @@
           },
           {
             "type": "PATTERN",
-            "value": "0x[0-9A-Fa-f]+"
+            "value": "-?0x[0-9A-Fa-f]+"
           }
         ]
       }
