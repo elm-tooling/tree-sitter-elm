@@ -555,8 +555,7 @@ unsigned tree_sitter_elm_external_scanner_serialize(void *payload,
     }
     size += indent_length_length;
 
-    int iter = 1;
-    for (; iter != scanner->indents.len &&
+    for (uint32_t iter = 1; iter < scanner->indents.len &&
            size < TREE_SITTER_SERIALIZATION_BUFFER_SIZE;
          ++iter) {
         buffer[size++] = (char)scanner->indents.data[iter];
