@@ -339,10 +339,6 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
                 }
             } else if (scan_block_comment(lexer)) {
                 lexer->mark_end(lexer);
-                advance(lexer);
-                if (lexer->lookahead == '-') {
-                    break;
-                }
             }
         }
 
