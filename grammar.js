@@ -34,7 +34,7 @@ module.exports = grammar({
   extras: ($) => [
     $.block_comment,
     $.line_comment,
-    /[\s\uFEFF\u2060\u200B]|\\\r?\n/,
+    /[ \n\r\uFEFF\u2060\u200B]|\\\r?\n/,
   ],
 
   word: ($) => $.lower_case_identifier,
