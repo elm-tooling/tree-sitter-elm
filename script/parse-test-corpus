@@ -98,6 +98,13 @@ if [ ! -d "$TEST_CORPUS_DIR" ]; then
   exit 1
 fi
 
+# Check that tree-sitter command is available
+if ! command -v ${TREE_SITTER_CMD%% *} >/dev/null 2>&1 && ! ${TREE_SITTER_CMD%% *} --version >/dev/null 2>&1; then
+  echo "Error: tree-sitter command not found: $TREE_SITTER_CMD"
+  echo "Please install tree-sitter or specify the path with --tspath"
+  exit 1
+fi
+
 echo "Parsing..."
 start=$(date +%s.%N)
 tree_sitter_output=$($TREE_SITTER_CMD parse "$TEST_CORPUS_DIR"/**/*.elm --quiet --stat 2>&1)
@@ -108,7 +115,8 @@ ret_code=$?
 # Process the output to extract failures and stats
 # Separate the file results from the summary stats (stats start with Total or parenthesized time)
 stats_lines=$(echo "$tree_sitter_output" | grep -E '^(Total|\([0-9]+ ms\))')
-file_results=$(echo "$tree_sitter_output" | grep -v -E '^(Total|\([0-9]+ ms\))' | grep -v "^$")
+# Extract only lines that look like file paths (start with / or ./) - filters out warnings and other messages
+file_results=$(echo "$tree_sitter_output" | grep -E '^(/|\./)' | grep -v "^$")
 
 # Extract failed files (lines containing "PARSE ERROR" or similar failure indicators)
 failed_files="$file_results"
@@ -190,10 +198,14 @@ if [ -n "$EXPECT_FAIL_FILE" ] && [ -f "$EXPECT_FAIL_FILE" ]; then
     # Calculate percentage using awk for floating point
     success_pct=$(awk "BEGIN {printf \"%.2f\", ($correct_parses / $total_parses) * 100}")
   else
+    total_parses="N/A"
+    correct_parses="N/A"
     success_pct="N/A"
   fi
   
   echo "Summary:"
+  echo "  Total files parsed: $total_parses"
+  echo "  Successful parses: $correct_parses"
   echo "  Unexpected failures: $unexpected_fail_count"
   echo "  Unexpected successes: $unexpected_success_count"
   echo "  Total errors: $total_errors"
@@ -211,8 +223,8 @@ else
   echo -e "-----------------------------------------------------------------\n$tree_sitter_output \n -----------------------------------------------------------------\n"
 fi
 
-runtime=$(echo "$end - $start" | bc -l)
+runtime=$(awk "BEGIN {printf \"%.3f\", $end - $start}")
 
-printf "Took: %s\n" "$runtime"
+printf "Took: %s seconds\n" "$runtime"
 
 exit $ret_code
