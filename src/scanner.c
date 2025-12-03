@@ -54,6 +54,7 @@ enum TokenType {
     MINUS_WITHOUT_TRAILING_WHITESPACE,
     GLSL_CONTENT,
     BLOCK_COMMENT_CONTENT,
+    STRING_CONTENT_MULTILINE,
 };
 
 typedef struct {
@@ -81,7 +82,8 @@ static bool in_error_recovery(const bool *valid_symbols) {
             valid_symbols[VIRTUAL_END_SECTION] &&
             valid_symbols[MINUS_WITHOUT_TRAILING_WHITESPACE] &&
             valid_symbols[GLSL_CONTENT] &&
-            valid_symbols[BLOCK_COMMENT_CONTENT]);
+            valid_symbols[BLOCK_COMMENT_CONTENT] &&
+            valid_symbols[STRING_CONTENT_MULTILINE]);
 }
 
 static bool is_elm_space(TSLexer *lexer) {
@@ -176,6 +178,45 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
         return true;
     }
     VEC_CLEAR(scanner->runback);
+
+    // Handle multiline string content before any whitespace/comment handling.
+    // This prevents line comments from being matched inside triple-quoted strings.
+    if (valid_symbols[STRING_CONTENT_MULTILINE]) {
+        lexer->result_symbol = STRING_CONTENT_MULTILINE;
+        bool has_content = false;
+        while (true) {
+            switch (lexer->lookahead) {
+                case '"':
+                    // Check for closing """
+                    lexer->mark_end(lexer);
+                    advance(lexer);
+                    if (lexer->lookahead == '"') {
+                        advance(lexer);
+                        if (lexer->lookahead == '"') {
+                            // Found """, end the string content here
+                            return has_content;
+                        }
+                        // Just "" - continue, this is valid content
+                        has_content = true;
+                    } else {
+                        // Just one " - continue, this is valid content
+                        has_content = true;
+                    }
+                    break;
+                case '\\':
+                    // Backslash starts an escape sequence, stop here
+                    lexer->mark_end(lexer);
+                    return has_content;
+                case '\0':
+                    // End of file
+                    lexer->mark_end(lexer);
+                    return has_content;
+                default:
+                    has_content = true;
+                    advance(lexer);
+            }
+        }
+    }
 
     // Check if we have newlines and how much indentation
     bool has_newline = false;
