@@ -1,4 +1,4 @@
-name: Test full Linux
+name: Test Corpus Linux
 
 on:
   push:
@@ -35,7 +35,5 @@ jobs:
           npm test
       - name: Test examples
         continue-on-error: true
-        env:
-          CORPUS_PATH: ${{ vars.TEST_CORPUS_PATH || 'https://github.com/dsimunic/tree-sitter-elm-test-corpus' }}
         run: |
-          script/parse-test-corpus --clone-test-corpus $CORPUS_PATH --expect-fail script/expected_fails.txt /var/tree-sitter-test-corpus/elm
+          script/parse-test-corpus --clone-test-corpus https://github.com/dsimunic/tree-sitter-elm-test-corpus --expect-fail script/expected_fails.txt /var/tree-sitter-test-corpus/elm
