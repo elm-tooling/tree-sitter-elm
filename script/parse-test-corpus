@@ -12,31 +12,29 @@ ARGUMENTS:
     <test_corpus_directory>    Directory path where the test corpus is located
 
 OPTIONS:
-    --clone-test-corpus URL    Clone the test corpus from the specified GitHub URL
+    --clone-test-corpus        Clone the test corpus from the URL specified in script/TEST_CORPUS_REPO
     --tspath PATH              Path to tree-sitter binary (default: npx tree-sitter)
     --expect-fail FILE         File containing list of expected failures (paths relative to test_corpus_directory)
     --help                     Show this help message and exit
 
 EXAMPLES:
     $0 /path/to/test-corpus
-    $0 --expect-fail script/expected_fails.txt --clone-test-corpus github.com/elm-tooling/tree-sitter-elm-corpus /path/to/test-corpus
+    $0 --expect-fail script/expected_fails.txt --clone-test-corpus /path/to/test-corpus
     $0 --tspath /usr/local/bin/tree-sitter /path/to/test-corpus
     $0 --expect-fail script/expected_fails.txt /path/to/test-corpus
 EOF
 }
 
-# Initialize variables
 TREE_SITTER_CMD='npx tree-sitter'
 TEST_CORPUS_DIR=""
 EXPECT_FAIL_FILE=""
-CLONE_URL=""
+CLONE_CORPUS=false
 
-# Parse arguments
 while [[ $# -gt 0 ]]; do
   case $1 in
     --clone-test-corpus)
-      CLONE_URL="$2"
-      shift 2
+      CLONE_CORPUS=true
+      shift
       ;;
     --tspath)
       TREE_SITTER_CMD="$2"
@@ -68,16 +66,28 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Check if test corpus directory is provided
 if [ -z "$TEST_CORPUS_DIR" ]; then
   echo "Error: test_corpus_directory is required"
   show_help
   exit 1
 fi
 
-# Clone or update the test corpus if URL is specified
-if [ -n "$CLONE_URL" ]; then
-  # Normalize URL - handle both github.com/... and https://github.com/...
+if [ "$CLONE_CORPUS" = true ]; then
+  SCRIPT_DIR="$(dirname "$0")"
+  TEST_CORPUS_REPO_FILE="$SCRIPT_DIR/TEST_CORPUS_REPO"
+  
+  if [ ! -f "$TEST_CORPUS_REPO_FILE" ]; then
+    echo "Error: TEST_CORPUS_REPO file not found at $TEST_CORPUS_REPO_FILE"
+    exit 1
+  fi
+  
+  CLONE_URL=$(cat "$TEST_CORPUS_REPO_FILE" | tr -d '[:space:]')
+  
+  if [ -z "$CLONE_URL" ]; then
+    echo "Error: TEST_CORPUS_REPO file is empty"
+    exit 1
+  fi
+  
   if [[ "$CLONE_URL" != https://* ]] && [[ "$CLONE_URL" != git@* ]]; then
     CLONE_URL="https://$CLONE_URL"
   fi
@@ -91,14 +101,12 @@ if [ -n "$CLONE_URL" ]; then
   fi
 fi
 
-# Check that test corpus directory exists
 if [ ! -d "$TEST_CORPUS_DIR" ]; then
   echo "Error: Test corpus directory does not exist: $TEST_CORPUS_DIR"
   echo "Use --clone-test-corpus to clone it first."
   exit 1
 fi
 
-# Check that tree-sitter command is available
 if ! command -v ${TREE_SITTER_CMD%% *} >/dev/null 2>&1 && ! ${TREE_SITTER_CMD%% *} --version >/dev/null 2>&1; then
   echo "Error: tree-sitter command not found: $TREE_SITTER_CMD"
   echo "Please install tree-sitter or specify the path with --tspath"
@@ -112,7 +120,6 @@ end=$(date +%s.%N)
 
 ret_code=$?
 
-# Process the output to extract failures and stats
 # Separate the file results from the summary stats (stats start with Total or parenthesized time)
 stats_lines=$(echo "$tree_sitter_output" | grep -E '^(Total|\([0-9]+ ms\))')
 # Extract only lines that look like file paths (start with / or ./) - filters out warnings and other messages
@@ -123,19 +130,15 @@ failed_files="$file_results"
 
 # If we have an expected failures file, process against it
 if [ -n "$EXPECT_FAIL_FILE" ] && [ -f "$EXPECT_FAIL_FILE" ]; then
-  # Create temp files for processing
   tmp_expected=$(mktemp)
   tmp_actual_fails=$(mktemp)
   tmp_unexpected_fails=$(mktemp)
   tmp_unexpected_successes=$(mktemp)
   
-  # Clean up temp files on exit
   trap 'rm -f "$tmp_expected" "$tmp_actual_fails" "$tmp_unexpected_fails" "$tmp_unexpected_successes"' EXIT
   
-  # Read expected failures, strip whitespace and skip comments/empty lines
   grep -v '^[[:space:]]*#' "$EXPECT_FAIL_FILE" | grep -v '^[[:space:]]*$' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sort -u > "$tmp_expected"
 
-  # Process each failed file and extract relative paths
   echo "$failed_files" | while IFS= read -r line; do
     if [ -n "$line" ]; then
       # Extract the file path from the line (it's at the beginning before any status)
@@ -157,14 +160,11 @@ if [ -n "$EXPECT_FAIL_FILE" ] && [ -f "$EXPECT_FAIL_FILE" ]; then
     fi
   done < <(comm -23 "$tmp_expected" "$tmp_actual_fails") > "$tmp_unexpected_successes"
 
-  # Count results
   unexpected_fail_count=$(wc -l < "$tmp_unexpected_fails" | tr -d ' ')
   unexpected_success_count=$(wc -l < "$tmp_unexpected_successes" | tr -d ' ')
 
-  # Report results
   echo -e "-----------------------------------------------------------------"
   
-  # Report unexpected failures
   if [ "$unexpected_fail_count" -gt 0 ]; then
     echo "UNEXPECTED FAILURES ($unexpected_fail_count):"
     while IFS= read -r uf; do
@@ -176,7 +176,6 @@ if [ -n "$EXPECT_FAIL_FILE" ] && [ -f "$EXPECT_FAIL_FILE" ]; then
     echo ""
   fi
   
-  # Report unexpected successes
   if [ "$unexpected_success_count" -gt 0 ]; then
     echo "UNEXPECTED SUCCESSES (expected to fail but passed) ($unexpected_success_count):"
     while IFS= read -r us; do
@@ -188,14 +187,12 @@ if [ -n "$EXPECT_FAIL_FILE" ] && [ -f "$EXPECT_FAIL_FILE" ]; then
     echo ""
   fi
   
-  # Print summary
   total_errors=$((unexpected_fail_count + unexpected_success_count))
   
-  # Extract total parses from stats for our own percentage calculation
   total_parses=$(echo "$stats_lines" | grep -oE 'Total parses: [0-9]+' | grep -oE '[0-9]+')
   if [ -n "$total_parses" ] && [ "$total_parses" -gt 0 ]; then
     correct_parses=$((total_parses - total_errors))
-    # Calculate percentage using awk for floating point
+    # Calculate percentage using awk for floating point to be compatible with mac and linux
     success_pct=$(awk "BEGIN {printf \"%.2f\", ($correct_parses / $total_parses) * 100}")
   else
     total_parses="N/A"
@@ -219,7 +216,6 @@ if [ -n "$EXPECT_FAIL_FILE" ] && [ -f "$EXPECT_FAIL_FILE" ]; then
     ret_code=0
   fi
 else
-  # No expected failures file, show original output
   echo -e "-----------------------------------------------------------------\n$tree_sitter_output \n -----------------------------------------------------------------\n"
 fi
 
