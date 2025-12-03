@@ -3059,7 +3059,7 @@
     },
     {
       "type": "PATTERN",
-      "value": "[\\s\\uFEFF\\u2060\\u200B]|\\\\\\r?\\n"
+      "value": "[ \\n\\r\\uFEFF\\u2060\\u200B]|\\\\\\r?\\n"
     }
   ],
   "conflicts": [
