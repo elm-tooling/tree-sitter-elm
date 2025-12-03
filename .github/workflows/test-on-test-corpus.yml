@@ -1,0 +1,41 @@
+name: Test full Linux
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [20, 22, 24]
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Npm install
+        run: |
+          npm i
+      - name: Unit tests
+        run: |
+          npm test
+      - name: Test examples
+        continue-on-error: true
+        env:
+          CORPUS_PATH: ${{ vars.TEST_CORPUS_PATH || 'https://github.com/dsimunic/tree-sitter-elm-test-corpus' }}
+        run: |
+          script/parse-test-corpus --clone-test-corpus $CORPUS_PATH --expect-fail script/expected_fails.txt /var/tree-sitter-test-corpus/elm
