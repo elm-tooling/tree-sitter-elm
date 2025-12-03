@@ -35,7 +35,5 @@ jobs:
           npm test
       - name: Test examples
         continue-on-error: true
-        env:
-          CORPUS_REPO: ${{ vars.TEST_CORPUS_REPO || 'https://github.com/dsimunic/tree-sitter-elm-corpus' }}
         run: |
-          script/parse-test-corpus --clone-test-corpus $CORPUS_REPO --expect-fail script/expected_fails.txt /tmp/tree-sitter-test-corpus
+          script/parse-test-corpus --clone-test-corpus --expect-fail script/expected_fails.txt /tmp/tree-sitter-test-corpus
