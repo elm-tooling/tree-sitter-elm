@@ -354,6 +354,7 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
         // If so, the block comment's column doesn't represent the real indentation
         // of the code - we need to look past it to find the actual content.
         if (lexer->lookahead == '{' && !valid_symbols[BLOCK_COMMENT_CONTENT] &&
+            scanner->indents.len > 0 &&
             scanner->indent_length < VEC_BACK(scanner->indents)) {
             // We're at '{' and would close sections based on indentation.
             // Check if this is a block comment.
@@ -437,7 +438,7 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
             // If not a block comment, indent_length is already correct
         }
 
-        while (scanner->indent_length <= VEC_BACK(scanner->indents)) {
+        while (scanner->indents.len > 0 && scanner->indent_length <= VEC_BACK(scanner->indents)) {
             if (scanner->indent_length == VEC_BACK(scanner->indents)) {
                 if (found_in) {
                     VEC_POP(scanner->indents);  // Pop the section we're closing
