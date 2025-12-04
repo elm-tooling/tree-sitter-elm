@@ -1,0 +1,4 @@
+foo =
+    case x of
+        A -> 1
+ (      B -> 2
