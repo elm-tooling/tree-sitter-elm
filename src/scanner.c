@@ -6,6 +6,9 @@
 
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
+// Maximum nesting depth for indent stack to prevent memory exhaustion
+#define MAX_INDENT_DEPTH 256
+
 #define VEC_RESIZE(vec, _cap)                                                  \
     void *tmp = realloc((vec).data, (_cap) * sizeof((vec).data[0]));           \
     assert(tmp != NULL);                                                       \
@@ -299,7 +302,9 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
             found_in = true;
         } else {
             lexer->result_symbol = VIRTUAL_END_SECTION;
-            VEC_POP(scanner->indents);
+            if (scanner->indents.len > 0) {
+                VEC_POP(scanner->indents);
+            }
             return true;
         }
     }
@@ -309,13 +314,18 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
     // This handles cases like: (\p -> case x of ... ) or { a = case x of ... , b = ... }
     if (checkForSectionEndingToken(lexer, valid_symbols)) {
         lexer->result_symbol = VIRTUAL_END_SECTION;
-        VEC_POP(scanner->indents);
+        if (scanner->indents.len > 0) {
+            VEC_POP(scanner->indents);
+        }
         return true;
     }
 
     // Open section if the grammar lets us but only push to indent stack if
     // we go further down in the stack
     if (valid_symbols[VIRTUAL_OPEN_SECTION] && !lexer->eof(lexer)) {
+        if (scanner->indents.len >= MAX_INDENT_DEPTH) {
+            return false;  // Prevent unbounded nesting
+        }
         VEC_PUSH(scanner->indents, lexer->get_column(lexer));
         lexer->result_symbol = VIRTUAL_OPEN_SECTION;
         return true;
@@ -482,7 +492,7 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
 
         // Needed for some of the more weird cases where let is in the same
         // line as everything before the in in the next line
-        if (found_in) {
+        if (found_in && scanner->indents.len > 0) {
             VEC_POP(scanner->indents);
             VEC_PUSH(scanner->runback, 1);
             found_in = false;
