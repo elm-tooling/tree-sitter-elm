@@ -6,6 +6,9 @@
 
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
+// Maximum nesting depth for indent stack to prevent memory exhaustion
+#define MAX_INDENT_DEPTH 256
+
 #define VEC_RESIZE(vec, _cap)                                                  \
     void *tmp = realloc((vec).data, (_cap) * sizeof((vec).data[0]));           \
     assert(tmp != NULL);                                                       \
@@ -54,6 +57,7 @@ enum TokenType {
     MINUS_WITHOUT_TRAILING_WHITESPACE,
     GLSL_CONTENT,
     BLOCK_COMMENT_CONTENT,
+    STRING_CONTENT_MULTILINE,
 };
 
 typedef struct {
@@ -81,7 +85,8 @@ static bool in_error_recovery(const bool *valid_symbols) {
             valid_symbols[VIRTUAL_END_SECTION] &&
             valid_symbols[MINUS_WITHOUT_TRAILING_WHITESPACE] &&
             valid_symbols[GLSL_CONTENT] &&
-            valid_symbols[BLOCK_COMMENT_CONTENT]);
+            valid_symbols[BLOCK_COMMENT_CONTENT] &&
+            valid_symbols[STRING_CONTENT_MULTILINE]);
 }
 
 static bool is_elm_space(TSLexer *lexer) {
@@ -177,6 +182,45 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
     }
     VEC_CLEAR(scanner->runback);
 
+    // Handle multiline string content before any whitespace/comment handling.
+    // This prevents line comments from being matched inside triple-quoted strings.
+    if (valid_symbols[STRING_CONTENT_MULTILINE]) {
+        lexer->result_symbol = STRING_CONTENT_MULTILINE;
+        bool has_content = false;
+        while (true) {
+            switch (lexer->lookahead) {
+                case '"':
+                    // Check for closing """
+                    lexer->mark_end(lexer);
+                    advance(lexer);
+                    if (lexer->lookahead == '"') {
+                        advance(lexer);
+                        if (lexer->lookahead == '"') {
+                            // Found """, end the string content here
+                            return has_content;
+                        }
+                        // Just "" - continue, this is valid content
+                        has_content = true;
+                    } else {
+                        // Just one " - continue, this is valid content
+                        has_content = true;
+                    }
+                    break;
+                case '\\':
+                    // Backslash starts an escape sequence, stop here
+                    lexer->mark_end(lexer);
+                    return has_content;
+                case '\0':
+                    // End of file
+                    lexer->mark_end(lexer);
+                    return has_content;
+                default:
+                    has_content = true;
+                    advance(lexer);
+            }
+        }
+    }
+
     // Check if we have newlines and how much indentation
     bool has_newline = false;
     bool found_in = false;
@@ -258,7 +302,9 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
             found_in = true;
         } else {
             lexer->result_symbol = VIRTUAL_END_SECTION;
-            VEC_POP(scanner->indents);
+            if (scanner->indents.len > 0) {
+                VEC_POP(scanner->indents);
+            }
             return true;
         }
     }
@@ -268,13 +314,18 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
     // This handles cases like: (\p -> case x of ... ) or { a = case x of ... , b = ... }
     if (checkForSectionEndingToken(lexer, valid_symbols)) {
         lexer->result_symbol = VIRTUAL_END_SECTION;
-        VEC_POP(scanner->indents);
+        if (scanner->indents.len > 0) {
+            VEC_POP(scanner->indents);
+        }
         return true;
     }
 
     // Open section if the grammar lets us but only push to indent stack if
     // we go further down in the stack
     if (valid_symbols[VIRTUAL_OPEN_SECTION] && !lexer->eof(lexer)) {
+        if (scanner->indents.len >= MAX_INDENT_DEPTH) {
+            return false;  // Prevent unbounded nesting
+        }
         VEC_PUSH(scanner->indents, lexer->get_column(lexer));
         lexer->result_symbol = VIRTUAL_OPEN_SECTION;
         return true;
@@ -298,10 +349,6 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
                 }
             } else if (scan_block_comment(lexer)) {
                 lexer->mark_end(lexer);
-                advance(lexer);
-                if (lexer->lookahead == '-') {
-                    break;
-                }
             }
         }
 
@@ -317,6 +364,7 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
         // If so, the block comment's column doesn't represent the real indentation
         // of the code - we need to look past it to find the actual content.
         if (lexer->lookahead == '{' && !valid_symbols[BLOCK_COMMENT_CONTENT] &&
+            scanner->indents.len > 0 &&
             scanner->indent_length < VEC_BACK(scanner->indents)) {
             // We're at '{' and would close sections based on indentation.
             // Check if this is a block comment.
@@ -400,7 +448,7 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
             // If not a block comment, indent_length is already correct
         }
 
-        while (scanner->indent_length <= VEC_BACK(scanner->indents)) {
+        while (scanner->indents.len > 0 && scanner->indent_length <= VEC_BACK(scanner->indents)) {
             if (scanner->indent_length == VEC_BACK(scanner->indents)) {
                 if (found_in) {
                     VEC_POP(scanner->indents);  // Pop the section we're closing
@@ -444,7 +492,7 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
 
         // Needed for some of the more weird cases where let is in the same
         // line as everything before the in in the next line
-        if (found_in) {
+        if (found_in && scanner->indents.len > 0) {
             VEC_POP(scanner->indents);
             VEC_PUSH(scanner->runback, 1);
             found_in = false;

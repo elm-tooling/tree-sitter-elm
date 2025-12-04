@@ -28,12 +28,13 @@ module.exports = grammar({
     $.minus_without_trailing_whitespace,
     $.glsl_content,
     $._block_comment_content,
+    $._string_content_multiline,
   ],
 
   extras: ($) => [
     $.block_comment,
     $.line_comment,
-    /[\s\uFEFF\u2060\u200B]|\\\r?\n/,
+    /[ \n\r\uFEFF\u2060\u200B]|\\\r?\n/,
   ],
 
   word: ($) => $.lower_case_identifier,
@@ -451,15 +452,7 @@ module.exports = grammar({
           alias('"""', $.open_quote),
           repeat(
             choice(
-              alias(
-                token.immediate(
-                  prec(
-                    PREC.STRING,
-                    repeat1(choice(/[^\\"]/, /"[^"]/, /""[^"]/))
-                  )
-                ),
-                $.regular_string_part
-              ),
+              alias($._string_content_multiline, $.regular_string_part),
               $.string_escape,
               $.invalid_string_escape
             )
