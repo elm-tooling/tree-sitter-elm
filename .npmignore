@@ -11,3 +11,4 @@ script
 HOW_TO_RELEASE.md
 rust
 Cargo.toml
+fuzz
