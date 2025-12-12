@@ -22,7 +22,7 @@ include = [
   "queries/*",
   "src/*",
   "tree-sitter.json",
-  "LICENSE",
+  "LICENSE.md",
 ]
 
 [lib]
