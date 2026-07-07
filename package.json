@@ -29,10 +29,11 @@
   },
   "devDependencies": {
     "prebuildify": "^6.0.1",
+    "tree-sitter": "^0.25.0",
     "tree-sitter-cli": "^0.26.10"
   },
   "peerDependencies": {
-    "tree-sitter": "^0.26.0"
+    "tree-sitter": "^0.25.0"
   },
   "peerDependenciesMeta": {
     "tree-sitter": {
@@ -44,15 +45,15 @@
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
     "build": "tree-sitter generate",
-    "parse-basic": "tree-sitter parse ./examples/basic.elm",
-    "parse-test": "tree-sitter parse --debug ./examples/test.elm",
+    "parse-basic": "tree-sitter parse --config-path script/tree-sitter-config.json ./examples/basic.elm",
+    "parse-test": "tree-sitter parse --config-path script/tree-sitter-config.json --debug=normal ./examples/test.elm",
     "test": "tree-sitter test && script/parse-examples",
     "test-skip-download": "tree-sitter test && script/parse-examples -s",
     "test-full": "tree-sitter test && script/parse-examples-full",
     "test-full-skip-download": "tree-sitter test && script/parse-examples-full -s",
     "test-only": "tree-sitter test",
-    "test-highlighting": "tree-sitter highlight test/highlight/basic.elm",
-    "test-tags": "tree-sitter tags test/highlight/basic.elm",
+    "test-highlighting": "tree-sitter highlight --config-path script/tree-sitter-config.json test/highlight/basic.elm",
+    "test-tags": "tree-sitter tags --config-path script/tree-sitter-config.json test/highlight/basic.elm",
     "generate-wasm": "tree-sitter build --wasm && mv ./tree-sitter-elm.wasm ./docs/js/tree-sitter-elm.wasm"
   },
   "repository": "https://github.com/elm-tooling/tree-sitter-elm"

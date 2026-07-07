@@ -11,7 +11,7 @@
       ],
       "highlights": "queries/highlights.scm",
       "tags": "queries/tags.scm",
-      "injection-regex": "queries/injections.scm"
+      "injections": "queries/injections.scm"
     }
   ],
   "metadata": {
