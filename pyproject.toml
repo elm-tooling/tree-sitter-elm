@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tree-sitter-elm"
 description = "Elm grammar for tree-sitter"
-version = "5.9.3"
+version = "5.9.4"
 keywords = ["incremental", "parsing", "tree-sitter", "elm"]
 classifiers = [
   "Intended Audience :: Developers",

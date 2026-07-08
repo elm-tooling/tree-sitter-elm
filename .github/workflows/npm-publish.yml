@@ -32,6 +32,7 @@ jobs:
           node-version: 22
       - run: npm i
       - run: npm run build
+      - run: npm install -g npm@latest
       - run: npm publish --access public --provenance --registry https://registry.npmjs.org
 
   publish-gpr:
