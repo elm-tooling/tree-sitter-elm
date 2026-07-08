@@ -30,10 +30,9 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org/
       - run: npm i
       - run: npm run build
-      - run: npm publish --access public --provenance
+      - run: npm publish --access public --provenance --registry https://registry.npmjs.org
 
   publish-gpr:
     needs: build
