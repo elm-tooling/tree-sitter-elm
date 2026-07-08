@@ -22,6 +22,9 @@ jobs:
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
@@ -30,9 +33,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm i
       - run: npm run build
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - run: npm publish --access public --provenance
 
   publish-gpr:
     needs: build
